@@ -220,6 +220,206 @@
     els.forEach(function (el) { io.observe(el); });
   }
 
+  var AI_NODES = {
+    start: {
+      text: '¡Hola! Soy el asistente virtual de SERMAQ. Puedo contarte sobre nuestros equipos, precios y zona de cobertura. ¿Qué te gustaría saber?',
+      options: [
+        { label: 'Equipos en renta', next: 'renta' },
+        { label: 'Equipos en venta', next: 'venta' },
+        { label: 'Precios y modalidades', next: 'precios' },
+        { label: 'Zona de cobertura', next: 'zona' },
+        { label: 'Hablar con un asesor', wa: 'Hola, quisiera hablar con un asesor de SERMAQ.' }
+      ]
+    },
+    renta: {
+      text: 'Rentamos maquinaria ligera por día, semana o mes, con entrega y recolección incluida. Estas son nuestras categorías:',
+      options: [
+        { label: 'Compactación', next: 'cat_compactacion' },
+        { label: 'Demolición', next: 'cat_demolicion' },
+        { label: 'Máquinas para concreto', next: 'cat_concreto' },
+        { label: 'Generadores', next: 'cat_generadores' },
+        { label: 'Soldadoras', next: 'cat_soldadoras' },
+        { label: 'Elevación', next: 'cat_elevacion' },
+        { label: 'Regresar al menú', next: 'start' }
+      ]
+    },
+    cat_compactacion: {
+      text: 'Compactación: placas vibratorias, rodillos y compactadoras/bailarinas, desde $550 al día.',
+      link: { label: 'Ver equipos y precios', href: '/equipos-renta#compactacion' },
+      options: [
+        { label: 'Cotizar por WhatsApp', wa: 'Hola, me interesa cotizar equipo de compactación.', cls: 'wa-option' },
+        { label: 'Ver otra categoría', next: 'renta' },
+        { label: 'Menú principal', next: 'start' }
+      ]
+    },
+    cat_demolicion: {
+      text: 'Demolición: martillos rompedores y demoledores de 15, 25 y 30 kg, desde $550 al día.',
+      link: { label: 'Ver equipos y precios', href: '/equipos-renta#demolicion' },
+      options: [
+        { label: 'Cotizar por WhatsApp', wa: 'Hola, me interesa cotizar equipo de demolición.', cls: 'wa-option' },
+        { label: 'Ver otra categoría', next: 'renta' },
+        { label: 'Menú principal', next: 'start' }
+      ]
+    },
+    cat_concreto: {
+      text: 'Máquinas para concreto: vibradores, allanadoras, revolvedora y cortadoras, desde $500 al día.',
+      link: { label: 'Ver equipos y precios', href: '/equipos-renta#concreto' },
+      options: [
+        { label: 'Cotizar por WhatsApp', wa: 'Hola, me interesa cotizar máquinas para concreto.', cls: 'wa-option' },
+        { label: 'Ver otra categoría', next: 'renta' },
+        { label: 'Menú principal', next: 'start' }
+      ]
+    },
+    cat_generadores: {
+      text: 'Generadores: plantas de luz de 5,500W a 13,000W, desde $600 al día.',
+      link: { label: 'Ver equipos y precios', href: '/equipos-renta#generadores' },
+      options: [
+        { label: 'Cotizar por WhatsApp', wa: 'Hola, me interesa cotizar un generador.', cls: 'wa-option' },
+        { label: 'Ver otra categoría', next: 'renta' },
+        { label: 'Menú principal', next: 'start' }
+      ]
+    },
+    cat_soldadoras: {
+      text: 'Soldadoras: equipo Bronco de 160 Amp, ideal para obra y taller, desde $770 al día.',
+      link: { label: 'Ver equipos y precios', href: '/equipos-renta#soldadoras' },
+      options: [
+        { label: 'Cotizar por WhatsApp', wa: 'Hola, me interesa cotizar una soldadora.', cls: 'wa-option' },
+        { label: 'Ver otra categoría', next: 'renta' },
+        { label: 'Menú principal', next: 'start' }
+      ]
+    },
+    cat_elevacion: {
+      text: 'Elevación: plataformas de tijera, articuladas, andamios y escaleras. Se cotizan según la altura que necesites.',
+      link: { label: 'Ver equipos disponibles', href: '/equipos-renta#elevacion' },
+      options: [
+        { label: 'Cotizar por WhatsApp', wa: 'Hola, me interesa cotizar equipo de elevación.', cls: 'wa-option' },
+        { label: 'Ver otra categoría', next: 'renta' },
+        { label: 'Menú principal', next: 'start' }
+      ]
+    },
+    venta: {
+      text: 'Vendemos maquinaria nueva y seminueva en las mismas categorías que rentamos, con garantía, revisión técnica previa y asesoría para elegir el equipo ideal.',
+      link: { label: 'Ver equipos en venta', href: '/equipos-venta' },
+      options: [
+        { label: 'Cotizar por WhatsApp', wa: 'Hola, me interesa comprar equipo. ¿Me pueden compartir opciones disponibles?', cls: 'wa-option' },
+        { label: 'Menú principal', next: 'start' }
+      ]
+    },
+    precios: {
+      text: 'Rentamos por día, semana o mes: entre más tiempo rentes, mejor precio por día te sale. El costo exacto depende del equipo, desde $500 al día. Dime qué necesitas y te ayudo a ubicar el precio, o te paso directo con un asesor.',
+      options: [
+        { label: 'Ver categorías de renta', next: 'renta' },
+        { label: 'Cotizar por WhatsApp', wa: 'Hola, quisiera una cotización de renta.', cls: 'wa-option' },
+        { label: 'Menú principal', next: 'start' }
+      ]
+    },
+    zona: {
+      text: 'Damos servicio en Querétaro y toda la zona del Bajío, con entrega y recolección incluida. Estamos ubicados en Carretera a los Cues Km 1.2, El Colorado, El Marqués, Querétaro.',
+      link: { label: 'Ver ubicación en el mapa', href: 'https://maps.app.goo.gl/o31nXRbfgL2trr4u9', external: true },
+      options: [
+        { label: 'Preguntar por WhatsApp', wa: 'Hola, quisiera saber si dan servicio en mi zona.', cls: 'wa-option' },
+        { label: 'Menú principal', next: 'start' }
+      ]
+    }
+  };
+
+  function initAiChat() {
+    var toggle = document.querySelector('.ai-chat-toggle');
+    var panel = document.querySelector('.ai-chat-panel');
+    var messages = document.querySelector('.ai-chat-messages');
+    var optionsWrap = document.querySelector('.ai-chat-options');
+    if (!toggle || !panel || !messages || !optionsWrap) return;
+
+    var started = false;
+
+    function scrollDown() {
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function addMessage(text, who) {
+      var div = document.createElement('div');
+      div.className = 'ai-msg ' + who;
+      div.textContent = text;
+      messages.appendChild(div);
+      scrollDown();
+    }
+
+    function addLink(link) {
+      var a = document.createElement('a');
+      a.className = 'ai-msg-link';
+      a.href = link.href;
+      a.textContent = link.label + ' →';
+      if (link.external) {
+        a.target = '_blank';
+        a.rel = 'noopener';
+      }
+      messages.appendChild(a);
+      scrollDown();
+    }
+
+    function renderOptions(node) {
+      optionsWrap.innerHTML = '';
+      node.options.forEach(function (opt) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = opt.label;
+        if (opt.cls) btn.className = opt.cls;
+        btn.addEventListener('click', function () {
+          addMessage(opt.label, 'user');
+          if (opt.wa) {
+            showTyping(function () {
+              addMessage('Te abrimos WhatsApp para continuar con un asesor.', 'bot');
+              window.open(waLink(opt.wa), '_blank', 'noopener');
+            });
+            return;
+          }
+          goTo(opt.next);
+        });
+        optionsWrap.appendChild(btn);
+      });
+    }
+
+    function showTyping(cb) {
+      optionsWrap.innerHTML = '';
+      var typing = document.createElement('div');
+      typing.className = 'ai-typing';
+      typing.innerHTML = '<span></span><span></span><span></span>';
+      messages.appendChild(typing);
+      scrollDown();
+      setTimeout(function () {
+        typing.remove();
+        cb();
+      }, 550);
+    }
+
+    function goTo(key) {
+      var node = AI_NODES[key];
+      if (!node) return;
+      showTyping(function () {
+        addMessage(node.text, 'bot');
+        if (node.link) addLink(node.link);
+        renderOptions(node);
+      });
+    }
+
+    function openChat() {
+      toggle.classList.add('is-open');
+      panel.classList.add('is-open');
+      if (!started) {
+        started = true;
+        goTo('start');
+      }
+    }
+    function closeChat() {
+      toggle.classList.remove('is-open');
+      panel.classList.remove('is-open');
+    }
+
+    toggle.addEventListener('click', function () {
+      if (panel.classList.contains('is-open')) closeChat(); else openChat();
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initPreloader();
     initNav();
@@ -231,5 +431,6 @@
     initScrollProgress();
     initTilt();
     initCounters();
+    initAiChat();
   });
 })();
