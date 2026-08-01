@@ -89,16 +89,16 @@ h1,h2,h3,h4,p{margin:0}
 /* ---------- header ---------- */
 .site-header{
   position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line);
-  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
   padding:14px clamp(20px,4vw,64px);
   transition:box-shadow .3s ease,padding .3s ease;
 }
 .site-header.is-scrolled{box-shadow:0 8px 24px rgba(8,10,82,.1);padding-top:9px;padding-bottom:9px}
-.site-header .logo{justify-self:start}
 .site-header .logo img{height:56px;width:auto;display:block;transition:height .3s ease}
 .site-header.is-scrolled .logo img{height:44px}
-.main-nav{display:flex;gap:4px;align-items:center;justify-self:center}
-.header-actions{justify-self:end}
+/* Absolutely centered on the header's full width, independent of the
+   logo/actions widths on either side (which can differ). */
+.main-nav{display:flex;gap:4px;align-items:center;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
 .main-nav a{
   padding:10px 14px;font-family:'Oswald',sans-serif;font-weight:500;font-size:14px;
   letter-spacing:.02em;text-transform:uppercase;color:var(--muted);
@@ -364,7 +364,6 @@ h1,h2,h3,h4,p{margin:0}
   .nav-scrim{display:none;position:fixed;inset:0;background:rgba(8,10,82,.4);z-index:54}
   .nav-scrim.is-open{display:block}
   .phone-link .phone-text{display:none}
-  .site-header{grid-template-columns:auto 1fr}
   .site-header .logo img{height:38px}
   .site-header.is-scrolled .logo img{height:34px}
   .value-grid{grid-template-columns:1fr;gap:32px}
@@ -408,4 +407,45 @@ h1,h2,h3,h4,p{margin:0}
 @keyframes preloaderSlide{0%{transform:translateX(-120%)}50%{transform:translateX(160%)}100%{transform:translateX(-120%)}}
 @media (prefers-reduced-motion:reduce){
   #preloader .preloader-logo,#preloader .preloader-bar span{animation:none}
+}
+
+/* ---------- scroll progress ---------- */
+.scroll-progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:70;background:transparent;pointer-events:none}
+.scroll-progress span{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--orange),#ffc24d);transition:width .1s linear}
+
+/* ---------- ambient floating blobs ---------- */
+.ambient{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0!important}
+.ambient span{position:absolute;border-radius:50%;filter:blur(60px);opacity:.35;animation:driftBlob 16s ease-in-out infinite}
+.ambient span:nth-child(1){width:280px;height:280px;background:var(--orange);top:-60px;left:8%;animation-duration:18s}
+.ambient span:nth-child(2){width:220px;height:220px;background:var(--navy);bottom:-40px;right:10%;animation-duration:22s;animation-delay:-4s}
+.ambient span:nth-child(3){width:160px;height:160px;background:#ffc24d;top:40%;right:30%;animation-duration:14s;animation-delay:-8s}
+@keyframes driftBlob{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(30px,-24px) scale(1.12)}
+  66%{transform:translate(-24px,18px) scale(.92)}
+}
+.section{position:relative}
+.section > .container{position:relative;z-index:1}
+
+/* ---------- brand marquee ---------- */
+.marquee{background:#fff;border-bottom:1px solid var(--line);padding:22px 0;overflow:hidden}
+.marquee-track{display:flex;width:max-content;gap:64px;animation:marqueeScroll 22s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-item{font-family:'Oswald',sans-serif;font-weight:600;font-size:19px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2);white-space:nowrap;display:flex;align-items:center;gap:10px}
+.marquee-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--orange)}
+@keyframes marqueeScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ---------- stat counters ---------- */
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;text-align:center}
+.stat-item .num{font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(32px,4vw,46px);color:var(--orange)}
+.stat-item .stat-label{font-size:13.5px;letter-spacing:.03em;color:rgba(255,255,255,.75);margin-top:6px}
+
+@media (prefers-reduced-motion:reduce){
+  .ambient span,.marquee-track{animation:none}
+}
+@media (max-width:860px){
+  .stats-strip{grid-template-columns:repeat(2,1fr);row-gap:28px}
+}
+@media (max-width:600px){
+  .ambient{display:none}
 }

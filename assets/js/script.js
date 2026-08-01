@@ -154,6 +154,72 @@
     });
   }
 
+  function initScrollProgress() {
+    var bar = document.querySelector('.scroll-progress span');
+    if (!bar) return;
+    function onScroll() {
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      var pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+      bar.style.width = pct + '%';
+    }
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+  }
+
+  function initTilt() {
+    if (window.matchMedia && window.matchMedia('(pointer:coarse)').matches) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    var els = document.querySelectorAll('.cat-card, .equipo-card, .venta-card, .mv-card');
+    els.forEach(function (el) {
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - 0.5;
+        var y = (e.clientY - r.top) / r.height - 0.5;
+        var rx = (-y * 8).toFixed(2);
+        var ry = (x * 10).toFixed(2);
+        el.style.transform = 'perspective(900px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translateY(-6px)';
+      });
+      el.addEventListener('mouseleave', function () {
+        el.style.transform = '';
+      });
+    });
+  }
+
+  function initCounters() {
+    var els = document.querySelectorAll('[data-count-to]');
+    if (!els.length) return;
+    function animate(el) {
+      var target = parseFloat(el.getAttribute('data-count-to'));
+      var suffix = el.getAttribute('data-count-suffix') || '';
+      var duration = 1400;
+      var start = null;
+      function step(ts) {
+        if (!start) start = ts;
+        var p = Math.min(1, (ts - start) / duration);
+        var eased = 1 - Math.pow(1 - p, 3);
+        var value = Math.round(target * eased);
+        el.textContent = value + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(animate);
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          animate(entry.target);
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    els.forEach(function (el) { io.observe(el); });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initPreloader();
     initNav();
@@ -162,5 +228,8 @@
     initEquipoTabs();
     initContactForm();
     initWaLinks();
+    initScrollProgress();
+    initTilt();
+    initCounters();
   });
 })();
