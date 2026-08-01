@@ -131,6 +131,23 @@
     });
   }
 
+  function initPreloader() {
+    var pre = document.getElementById('preloader');
+    if (!pre) return;
+    var hidden = false;
+    function hide() {
+      if (hidden) return;
+      hidden = true;
+      pre.classList.add('is-hidden');
+    }
+    if (document.readyState === 'complete') {
+      setTimeout(hide, 200);
+    } else {
+      window.addEventListener('load', function () { setTimeout(hide, 200); });
+    }
+    setTimeout(hide, 4000);
+  }
+
   function initWaLinks() {
     document.querySelectorAll('[data-wa-message]').forEach(function (el) {
       el.setAttribute('href', waLink(el.getAttribute('data-wa-message')));
@@ -138,6 +155,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
+    initPreloader();
     initNav();
     initStickyHeader();
     initReveal();
