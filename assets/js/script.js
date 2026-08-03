@@ -40,11 +40,19 @@
   function initStickyHeader() {
     var header = document.querySelector('.site-header');
     if (!header) return;
-    function onScroll() {
-      if (window.scrollY > 8) header.classList.add('is-scrolled');
-      else header.classList.remove('is-scrolled');
+    var ticking = false;
+    function apply() {
+      var y = window.scrollY;
+      if (y > 60) header.classList.add('is-scrolled');
+      else if (y < 20) header.classList.remove('is-scrolled');
+      ticking = false;
     }
-    onScroll();
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(apply);
+    }
+    apply();
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 

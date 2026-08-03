@@ -91,11 +91,14 @@ h1,h2,h3,h4,p{margin:0}
   position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line);
   display:flex;align-items:center;justify-content:space-between;gap:20px;
   padding:14px clamp(20px,4vw,64px);
-  transition:box-shadow .3s ease,padding .3s ease;
+  transition:box-shadow .3s ease;
 }
-.site-header.is-scrolled{box-shadow:0 8px 24px rgba(8,10,82,.1);padding-top:9px;padding-bottom:9px}
-.site-header .logo img{height:56px;width:auto;display:block;transition:height .3s ease}
-.site-header.is-scrolled .logo img{height:44px}
+.site-header.is-scrolled{box-shadow:0 8px 24px rgba(8,10,82,.1)}
+.site-header .logo img{
+  height:56px;width:auto;display:block;transform-origin:left center;
+  transition:transform .35s cubic-bezier(.2,.7,.2,1);will-change:transform;
+}
+.site-header.is-scrolled .logo img{transform:scale(.82)}
 /* Absolutely centered on the header's full width, independent of the
    logo/actions widths on either side (which can differ). */
 .main-nav{display:flex;gap:4px;align-items:center;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
@@ -404,7 +407,6 @@ h1,h2,h3,h4,p{margin:0}
   .nav-scrim.is-open{display:block}
   .phone-link .phone-text{display:none}
   .site-header .logo img{height:38px}
-  .site-header.is-scrolled .logo img{height:34px}
   .value-grid{grid-template-columns:1fr;gap:32px}
   .mv-grid{grid-template-columns:1fr;margin-bottom:48px}
   .value-card{min-height:0;padding:26px 24px}
