@@ -51,8 +51,8 @@ h1,h2,h3,h4,p{margin:0}
 @media (prefers-reduced-motion:reduce){
   [data-reveal],[data-reveal-group] > *{opacity:1;transform:none;transition:none}
   html{scroll-behavior:auto}
-  .hero-accent,.cta-banner-accent,.trust-item svg,.value-item svg,.mv-card svg,
-  .value-card svg,.hero-media img,.hero-media video,
+  .hero-accent,.cta-banner-accent,.trust-item svg,.value-item svg,.icon-badge,
+  .hero-media img,.hero-media video,
   .about-photo img,#preloader .preloader-logo,#preloader .preloader-bar span{
     animation:none !important;
   }
@@ -211,34 +211,47 @@ h1,h2,h3,h4,p{margin:0}
 .about-photo img{width:100%;height:100%;object-fit:cover;transition:transform 8s ease;animation:heroPan 20s ease-in-out infinite alternate}
 .about-photo:hover img{transform:scale(1.08)}
 .about-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(8,10,82,.55),rgba(8,10,82,0) 55%)}
-.mv-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:24px}
-.mv-card{background:#fff;border:1px solid var(--line);padding:32px;transition:box-shadow .3s ease,transform .3s ease}
-.mv-card:hover{box-shadow:var(--shadow);transform:translateY(-4px)}
-.mv-card svg{color:var(--orange);margin-bottom:14px;animation:iconFloat 3.2s ease-in-out infinite}
-.mv-card:nth-child(2) svg{animation-delay:.25s}
-.mv-card .label{font-family:'Oswald',sans-serif;font-weight:600;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:14px}
-.mv-card p{font-size:15.5px;line-height:1.65;color:#3d4053;margin:0;text-align:justify}
-/* ---------- values section ---------- */
-.values-section{background:var(--paper);padding-top:96px;padding-bottom:96px;overflow:hidden}
+.mv-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:88px}
+.mv-card{position:relative;background:#fff;padding:36px 32px;box-shadow:0 12px 30px rgba(8,10,82,.07);transition:box-shadow .3s ease,transform .3s ease}
+.mv-card:hover{box-shadow:var(--shadow);transform:translateY(-6px)}
+.mv-card .icon-badge{animation-delay:0s}
+.mv-card:nth-child(2) .icon-badge{animation-delay:.25s}
+.mv-card .label{font-family:'Oswald',sans-serif;font-weight:700;font-size:16px;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:14px;padding-top:14px;position:relative}
+.mv-card .label::before{content:'';position:absolute;top:0;left:0;width:36px;height:3px;background:var(--orange)}
+.mv-card p{font-size:16px;line-height:1.7;color:var(--ink);margin:0;text-align:left;font-weight:400}
+.mv-card p strong{font-weight:700;color:var(--navy)}
+
+/* ---------- icon badge (shared: mv-card + value-card) ---------- */
+.icon-badge{
+  width:56px;height:56px;border-radius:16px;background:rgba(247,148,29,.12);
+  display:flex;align-items:center;justify-content:center;margin-bottom:18px;
+  animation:iconFloat 3.2s ease-in-out infinite;
+}
+.icon-badge svg{color:var(--orange)}
+.value-card--featured .icon-badge{background:rgba(255,255,255,.22)}
+.value-card--featured .icon-badge svg{color:#fff}
+
+/* ---------- values (Misión/Visión section continues, no seam) ---------- */
 .values-wrap{display:grid;grid-template-columns:.85fr 1.3fr;gap:64px;align-items:center}
 .values-intro .kicker{margin-bottom:14px}
 .values-intro h2{font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(38px,5vw,58px);line-height:1.02;text-transform:uppercase;color:var(--navy);margin:0 0 22px}
-.values-intro p{font-size:16px;line-height:1.7;color:var(--muted);max-width:360px}
+.values-intro p{font-size:16.5px;line-height:1.7;color:var(--ink);max-width:360px;font-weight:500}
 .values-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
 .value-card{
-  position:relative;background:var(--offwhite);padding:30px 28px;min-height:230px;
+  position:relative;background:#fff;padding:30px 28px;min-height:230px;
+  box-shadow:0 12px 30px rgba(8,10,82,.07);
   display:flex;flex-direction:column;justify-content:space-between;
   clip-path:polygon(0 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%);
   transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s ease;
 }
 .value-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
-.value-card svg{color:var(--orange);margin-bottom:18px;animation:iconFloat 3.2s ease-in-out infinite}
-.value-card:nth-child(2) svg{animation-delay:.2s}
-.value-card:nth-child(3) svg{animation-delay:.4s}
-.value-card:nth-child(4) svg{animation-delay:.6s}
-.value-card p{font-size:15px;line-height:1.6;color:#3d4053;margin:0 0 18px}
+.value-card:nth-child(2) .icon-badge{animation-delay:.2s}
+.value-card:nth-child(3) .icon-badge{animation-delay:.4s}
+.value-card:nth-child(4) .icon-badge{animation-delay:.6s}
+.value-card p{font-size:15.5px;line-height:1.65;color:var(--ink);margin:0 0 18px;font-weight:400}
+.value-card p strong{font-weight:700;color:var(--navy)}
 .value-card-label{
-  position:relative;font-family:'Oswald',sans-serif;font-weight:600;font-size:14px;
+  position:relative;font-family:'Oswald',sans-serif;font-weight:700;font-size:14px;
   letter-spacing:.06em;text-transform:uppercase;color:var(--navy);padding-top:16px;
 }
 .value-card-label::before{content:'';position:absolute;top:0;left:0;width:36px;height:2px;background:var(--orange)}
@@ -246,12 +259,12 @@ h1,h2,h3,h4,p{margin:0}
   background:linear-gradient(150deg,#ffb24d,var(--orange) 55%,var(--orange-2));
   box-shadow:0 20px 44px rgba(247,148,29,.35);
 }
-.value-card--featured svg{color:#fff}
-.value-card--featured p{color:rgba(255,255,255,.92)}
+.value-card--featured p{color:#fff;font-weight:500}
+.value-card--featured p strong{color:#fff}
 .value-card--featured .value-card-label{color:#fff}
 .value-card--featured .value-card-label::before{background:#fff}
 @media (prefers-reduced-motion:reduce){
-  .value-card{transition:none}
+  .value-card,.icon-badge{transition:none;animation:none}
 }
 
 /* ---------- CTA banner ---------- */
@@ -368,6 +381,7 @@ h1,h2,h3,h4,p{margin:0}
   .hero-grid{grid-template-columns:1fr;gap:36px}
   .hero-media{height:300px}
   .about-top{grid-template-columns:1fr}
+  .mv-grid{margin-bottom:64px}
   .values-wrap{grid-template-columns:1fr;gap:40px}
   .values-intro p{max-width:520px}
   .contact-grid{grid-template-columns:1fr}
@@ -392,8 +406,7 @@ h1,h2,h3,h4,p{margin:0}
   .site-header .logo img{height:38px}
   .site-header.is-scrolled .logo img{height:34px}
   .value-grid{grid-template-columns:1fr;gap:32px}
-  .mv-grid{grid-template-columns:1fr}
-  .values-section{padding-top:64px;padding-bottom:64px}
+  .mv-grid{grid-template-columns:1fr;margin-bottom:48px}
   .value-card{min-height:0;padding:26px 24px}
   .venta-card{grid-template-columns:1fr}
   .venta-media{padding:20px 0}
