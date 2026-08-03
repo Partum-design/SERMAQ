@@ -52,7 +52,7 @@ h1,h2,h3,h4,p{margin:0}
   [data-reveal],[data-reveal-group] > *{opacity:1;transform:none;transition:none}
   html{scroll-behavior:auto}
   .hero-accent,.cta-banner-accent,.trust-item svg,.value-item svg,.mv-card svg,
-  .values-bar::before,.values-bar .label svg,.hero-media img,.hero-media video,
+  .value-card svg,.hero-media img,.hero-media video,
   .about-photo img,#preloader .preloader-logo,#preloader .preloader-bar span{
     animation:none !important;
   }
@@ -218,18 +218,41 @@ h1,h2,h3,h4,p{margin:0}
 .mv-card:nth-child(2) svg{animation-delay:.25s}
 .mv-card .label{font-family:'Oswald',sans-serif;font-weight:600;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:14px}
 .mv-card p{font-size:15.5px;line-height:1.65;color:#3d4053;margin:0;text-align:justify}
-.values-bar{position:relative;overflow:hidden;background:var(--navy);padding:28px 32px;display:flex;align-items:center;gap:28px;flex-wrap:wrap}
-.values-bar::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(100deg,transparent 0%,rgba(247,148,29,.16) 50%,transparent 100%);
-  background-size:250% 100%;animation:valuesShine 6s ease-in-out infinite;
+/* ---------- values section ---------- */
+.values-section{background:var(--paper);padding-top:96px;padding-bottom:96px;overflow:hidden}
+.values-wrap{display:grid;grid-template-columns:.85fr 1.3fr;gap:64px;align-items:center}
+.values-intro .kicker{margin-bottom:14px}
+.values-intro h2{font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(38px,5vw,58px);line-height:1.02;text-transform:uppercase;color:var(--navy);margin:0 0 22px}
+.values-intro p{font-size:16px;line-height:1.7;color:var(--muted);max-width:360px}
+.values-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.value-card{
+  position:relative;background:var(--offwhite);padding:30px 28px;min-height:230px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  clip-path:polygon(0 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%);
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s ease;
 }
-.values-bar .label{position:relative;font-family:'Oswald',sans-serif;font-weight:600;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:#fff;display:flex;align-items:center;gap:10px}
-.values-bar .label svg{color:var(--orange);animation:iconFloat 3s ease-in-out infinite}
-.values-bar .chips{position:relative;display:flex;gap:14px;flex-wrap:wrap}
-.values-bar .chip{font-family:'Oswald',sans-serif;font-size:14px;font-weight:500;letter-spacing:.03em;color:#fff;background:rgba(255,255,255,.12);padding:9px 18px;transition:background .2s ease,transform .2s ease}
-.values-bar .chip:hover{background:rgba(255,255,255,.22);transform:translateY(-2px)}
-@keyframes valuesShine{0%{background-position:0% 0%}100%{background-position:100% 0%}}
+.value-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.value-card svg{color:var(--orange);margin-bottom:18px;animation:iconFloat 3.2s ease-in-out infinite}
+.value-card:nth-child(2) svg{animation-delay:.2s}
+.value-card:nth-child(3) svg{animation-delay:.4s}
+.value-card:nth-child(4) svg{animation-delay:.6s}
+.value-card p{font-size:15px;line-height:1.6;color:#3d4053;margin:0 0 18px}
+.value-card-label{
+  position:relative;font-family:'Oswald',sans-serif;font-weight:600;font-size:14px;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--navy);padding-top:16px;
+}
+.value-card-label::before{content:'';position:absolute;top:0;left:0;width:36px;height:2px;background:var(--orange)}
+.value-card--featured{
+  background:linear-gradient(150deg,#ffb24d,var(--orange) 55%,var(--orange-2));
+  box-shadow:0 20px 44px rgba(247,148,29,.35);
+}
+.value-card--featured svg{color:#fff}
+.value-card--featured p{color:rgba(255,255,255,.92)}
+.value-card--featured .value-card-label{color:#fff}
+.value-card--featured .value-card-label::before{background:#fff}
+@media (prefers-reduced-motion:reduce){
+  .value-card{transition:none}
+}
 
 /* ---------- CTA banner ---------- */
 .cta-banner{position:relative;overflow:hidden;text-align:center}
@@ -345,6 +368,8 @@ h1,h2,h3,h4,p{margin:0}
   .hero-grid{grid-template-columns:1fr;gap:36px}
   .hero-media{height:300px}
   .about-top{grid-template-columns:1fr}
+  .values-wrap{grid-template-columns:1fr;gap:40px}
+  .values-intro p{max-width:520px}
   .contact-grid{grid-template-columns:1fr}
   .trust-bar{grid-template-columns:repeat(2,1fr)}
   .trust-item:nth-child(2){border-right:none}
@@ -368,6 +393,8 @@ h1,h2,h3,h4,p{margin:0}
   .site-header.is-scrolled .logo img{height:34px}
   .value-grid{grid-template-columns:1fr;gap:32px}
   .mv-grid{grid-template-columns:1fr}
+  .values-section{padding-top:64px;padding-bottom:64px}
+  .value-card{min-height:0;padding:26px 24px}
   .venta-card{grid-template-columns:1fr}
   .venta-media{padding:20px 0}
   .footer-grid{grid-template-columns:1fr;gap:32px}
@@ -377,6 +404,8 @@ h1,h2,h3,h4,p{margin:0}
   .equipo-grid{grid-template-columns:1fr}
   .trust-bar{grid-template-columns:1fr;transform:translateY(30px)}
   .trust-item{border-right:none}
+  .values-grid{grid-template-columns:1fr}
+  .value-card{clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%)}
   .hero{padding-top:40px}
   .hero-first-section{padding-top:110px}
   .wa-float .wa-text{display:none}
