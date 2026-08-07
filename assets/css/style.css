@@ -6,12 +6,13 @@
 
 :root{
   /* marca */
-  --blue:#0511F2;
+  --blue:#03258C;
   --navy:#03178C;
+  --blue-deep:#021A66;
   --amber:#F2AB27;
   --orange:#F28729;
   --ink:#0D0D0D;
-  --wa:#25D366;
+  --wa:#1B6E3A;
 
   /* superficies oscuras (contexto por defecto) */
   --ink-2:#121216;
@@ -141,11 +142,11 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 .btn-orange{--btn-bg:var(--orange);--btn-fg:var(--ink)}
 .btn-orange:hover{--btn-bg:#FFB25C}
 .btn-wa,.btn-whatsapp{--btn-bg:var(--wa);--btn-fg:#fff}
-.btn-wa:hover,.btn-whatsapp:hover{--btn-bg:#1FBF5B}
+.btn-wa:hover,.btn-whatsapp:hover{--btn-bg:#23874A}
 .btn-outline{--btn-bg:transparent;--btn-fg:var(--fg);--btn-line:var(--line-strong)}
 .btn-outline:hover{--btn-bg:var(--orange);--btn-fg:var(--ink);--btn-line:var(--orange)}
 .wa-button-icon{flex:0 0 auto;color:currentColor}
-.btn-orange .wa-button-icon{color:#0F7A38}
+.btn-orange .wa-button-icon{color:var(--wa)}
 
 /* enlace-flecha */
 .arrow-link{
@@ -257,8 +258,9 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 .hero-stage{position:relative;z-index:2;align-self:stretch;min-height:clamp(340px,44vw,600px);display:flex;align-items:flex-end;justify-content:center}
 .stage-block{
   position:absolute;right:6%;top:8%;bottom:16%;width:min(56%,420px);
-  background:var(--blue);
-  box-shadow:0 40px 120px rgba(5,17,242,.35);
+  background:linear-gradient(158deg,#04329F 0%,var(--blue) 58%,#03206E 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 1px 0 0 rgba(255,255,255,.08);
+  box-shadow:0 40px 120px rgba(3,37,140,.55);
   display:flex;align-items:flex-start;justify-content:flex-end;padding:10px 16px;
 }
 .stage-ghost{
@@ -403,7 +405,7 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 .process-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);gap:clamp(32px,5vw,72px);align-items:center;margin-bottom:clamp(40px,5vw,68px)}
 .process-photo{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--navy)}
 .process-photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(.18) contrast(1.05)}
-.process-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(200deg,rgba(5,17,242,.30),transparent 55%,rgba(13,13,13,.45))}
+.process-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(200deg,rgba(3,37,140,.42),transparent 55%,rgba(13,13,13,.45))}
 .process-photo .tag{
   position:absolute;left:0;bottom:0;z-index:2;background:var(--ink);color:#fff;
   font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
@@ -429,7 +431,7 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 .about-photo{position:relative;overflow:hidden;min-height:clamp(360px,44vw,600px);background:var(--navy)}
 .about-photo img{width:100%;height:100%;object-fit:cover}
 .about-photo img{filter:grayscale(.15) contrast(1.04)}
-.about-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(200deg,rgba(5,17,242,.26),transparent 50%,rgba(13,13,13,.3))}
+.about-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(200deg,rgba(3,37,140,.34),transparent 50%,rgba(13,13,13,.3))}
 .about-photo .stamp{
   position:absolute;right:0;top:0;z-index:2;background:var(--blue);color:#fff;
   font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
@@ -466,7 +468,7 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 .cta-banner{position:relative;overflow:hidden}
 .cta-banner::after{
   content:'';position:absolute;right:-6%;top:-30%;width:52vw;height:160%;
-  background:var(--navy);opacity:.55;transform:skewX(-12deg);pointer-events:none;
+  background:var(--blue-deep);opacity:.85;transform:skewX(-12deg);pointer-events:none;
 }
 .cta-layout{position:relative;z-index:3;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:clamp(34px,5vw,72px);align-items:center}
 .cta-kicker{display:inline-flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#fff;margin-bottom:20px}
@@ -504,7 +506,9 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 .page-hero p{font-size:17px;line-height:1.6;color:rgba(255,255,255,.8);max-width:54ch}
 
 .page-hero-art{position:relative;height:clamp(210px,22vw,300px);display:flex;align-items:flex-end;justify-content:center}
-.art-block{position:absolute;right:0;top:0;bottom:12%;width:min(64%,290px);background:var(--blue)}
+.art-block{position:absolute;right:0;top:0;bottom:12%;width:min(64%,290px);
+  background:linear-gradient(158deg,#04329F,var(--blue) 60%,#03206E);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16)}
 .art-block::after{
   content:'';position:absolute;left:-1px;top:-1px;width:22px;height:22px;
   border-left:2px solid var(--amber);border-top:2px solid var(--amber);
@@ -518,7 +522,8 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 .page-hero--plain .page-hero-inner{grid-template-columns:1fr}
 .page-hero--plain::after{
   content:'';position:absolute;right:0;top:clamp(96px,11vw,124px);bottom:0;
-  width:clamp(56px,9vw,148px);background:var(--blue);z-index:2;
+  width:clamp(56px,9vw,148px);z-index:2;
+  background:linear-gradient(180deg,#04329F,var(--blue) 55%,#03206E);
 }
 
 /* ------------------------------------------------------------- tabs ----- */
@@ -548,7 +553,7 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 /* --------------------------------------------------- fichas de equipo --- */
 .equipo-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
 .equipo-card{display:flex;flex-direction:column;background:var(--panel);border-right:1px solid var(--line);border-bottom:1px solid var(--line);transition:box-shadow .3s ease}
-.equipo-card:hover{box-shadow:inset 0 0 0 1px var(--blue)}
+.equipo-card:hover{box-shadow:inset 0 0 0 2px var(--blue)}
 .equipo-card.is-hidden{display:none}
 .equipo-media{
   position:relative;height:210px;display:flex;align-items:center;justify-content:center;overflow:hidden;
@@ -579,7 +584,7 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 /* --------------------------------------------------------- venta -------- */
 .venta-grid{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
 .venta-card{display:grid;grid-template-columns:210px minmax(0,1fr);background:var(--panel);border-right:1px solid var(--line);border-bottom:1px solid var(--line);transition:box-shadow .3s ease}
-.venta-card:hover{box-shadow:inset 0 0 0 1px var(--blue)}
+.venta-card:hover{box-shadow:inset 0 0 0 2px var(--blue)}
 .venta-media{position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(168deg,#E9EAEF 0%,#CBCDD6 100%);border-right:1px solid var(--line);padding:26px 16px}
 .venta-media img{width:100%;height:100%;max-height:190px;object-fit:contain;transition:transform .5s var(--ease)}
 .venta-card:hover .venta-media img{transform:scale(1.05)}
@@ -660,7 +665,7 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
   position:fixed;bottom:22px;left:22px;z-index:70;
   width:56px;height:56px;display:grid;place-items:center;
   background:var(--blue);color:#fff;border:none;
-  box-shadow:0 18px 40px rgba(5,17,242,.4);transition:transform .25s var(--ease),background .25s ease;
+  box-shadow:0 18px 40px rgba(3,37,140,.55);transition:transform .25s var(--ease),background .25s ease;
 }
 .ai-chat-toggle:hover{transform:translateY(-3px)}
 .ai-chat-toggle .icon-chat,.ai-chat-toggle .icon-close{position:absolute;transition:opacity .2s ease,transform .2s ease}
@@ -708,7 +713,7 @@ body.hero-visible .wa-float,body.hero-visible .ai-chat-toggle{opacity:0;transfor
 }
 .ai-chat-options button:hover{background:#fff;border-color:#fff;color:var(--ink)}
 .ai-chat-options button.wa-option{background:var(--wa);border-color:var(--wa);color:#fff}
-.ai-chat-options button.wa-option:hover{background:#1FBF5B;border-color:#1FBF5B}
+.ai-chat-options button.wa-option:hover{background:#23874A;border-color:#23874A}
 
 /* ---------------------------------------------------------- preloader --- */
 #preloader{
@@ -719,7 +724,7 @@ body.hero-visible .wa-float,body.hero-visible .ai-chat-toggle{opacity:0;transfor
 #preloader.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
 #preloader .preloader-logo{height:52px;width:auto}
 #preloader .preloader-bar{width:180px;height:2px;background:rgba(255,255,255,.16);overflow:hidden}
-#preloader .preloader-bar span{display:block;height:100%;width:35%;background:var(--blue);animation:load 1.2s ease-in-out infinite}
+#preloader .preloader-bar span{display:block;height:100%;width:35%;background:var(--amber);animation:load 1.2s ease-in-out infinite}
 @keyframes load{0%{transform:translateX(-110%)}100%{transform:translateX(300%)}}
 
 .scroll-progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:80;pointer-events:none}
