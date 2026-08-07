@@ -176,6 +176,139 @@
     window.addEventListener('resize', onScroll);
   }
 
+  function initCursor() {
+    var fine = window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    if (!fine || reduced) return;
+
+    var dot = document.createElement('div');
+    dot.className = 'cursor-dot';
+    var ring = document.createElement('div');
+    ring.className = 'cursor-ring';
+    document.body.appendChild(dot);
+    document.body.appendChild(ring);
+    document.documentElement.classList.add('has-cursor');
+
+    var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+    var rx = mx, ry = my;
+
+    window.addEventListener('mousemove', function (e) {
+      mx = e.clientX;
+      my = e.clientY;
+      dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
+    });
+
+    function loop() {
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    document.addEventListener('mousedown', function () { ring.classList.add('is-down'); });
+    document.addEventListener('mouseup', function () { ring.classList.remove('is-down'); });
+    document.addEventListener('mouseleave', function () {
+      dot.classList.add('is-hidden');
+      ring.classList.add('is-hidden');
+    });
+    document.addEventListener('mouseenter', function () {
+      dot.classList.remove('is-hidden');
+      ring.classList.remove('is-hidden');
+    });
+
+    var HOVER_SEL = 'a, button, .btn, .cat-card, .equipo-card, .venta-card, .value-card, .mv-card, .contact-card, .tab-btn';
+    document.addEventListener('mouseover', function (e) {
+      if (e.target.closest && e.target.closest(HOVER_SEL)) ring.classList.add('is-hover');
+    });
+    document.addEventListener('mouseout', function (e) {
+      if (e.target.closest && e.target.closest(HOVER_SEL)) ring.classList.remove('is-hover');
+    });
+  }
+
+  function initHeroCanvas() {
+    if (typeof THREE === 'undefined') return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    if (window.matchMedia && window.matchMedia('(pointer:coarse)').matches) return;
+
+    var canvases = document.querySelectorAll('.hero-canvas, .page-hero-canvas');
+    canvases.forEach(function (canvas) {
+      try {
+        setupParticleField(canvas);
+      } catch (err) {
+        canvas.style.display = 'none';
+      }
+    });
+
+    function setupParticleField(canvas) {
+      var wrap = canvas.parentElement;
+      var isMain = canvas.classList.contains('hero-canvas');
+      var count = isMain ? 260 : 130;
+
+      var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(55, 1, 0.1, 100);
+      camera.position.z = isMain ? 22 : 18;
+
+      var positions = new Float32Array(count * 3);
+      for (var i = 0; i < count; i++) {
+        positions[i * 3] = (Math.random() - 0.5) * 40;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 24;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
+      }
+      var geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+      var material = new THREE.PointsMaterial({
+        color: 0xf7941d,
+        size: isMain ? 0.11 : 0.09,
+        transparent: true,
+        opacity: 0.55,
+        sizeAttenuation: true
+      });
+      var points = new THREE.Points(geometry, material);
+      scene.add(points);
+
+      var material2 = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: isMain ? 0.06 : 0.05,
+        transparent: true,
+        opacity: 0.35,
+        sizeAttenuation: true
+      });
+      var points2 = new THREE.Points(geometry, material2);
+      points2.rotation.z = 0.4;
+      scene.add(points2);
+
+      function resize() {
+        var w = wrap.clientWidth || window.innerWidth;
+        var h = wrap.clientHeight || window.innerHeight;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h, false);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      var running = true;
+      document.addEventListener('visibilitychange', function () {
+        running = !document.hidden;
+        if (running) requestAnimationFrame(animate);
+      });
+
+      function animate() {
+        if (!running) return;
+        points.rotation.y += 0.0006;
+        points2.rotation.y -= 0.0004;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+  }
+
   function initTilt() {
     if (window.matchMedia && window.matchMedia('(pointer:coarse)').matches) return;
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
@@ -440,5 +573,7 @@
     initTilt();
     initCounters();
     initAiChat();
+    initCursor();
+    initHeroCanvas();
   });
 })();
