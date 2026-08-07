@@ -20,6 +20,7 @@
   <img src="assets/logo-blanco.png" alt="" class="preloader-logo">
   <div class="preloader-bar"><span></span></div>
 </div>
+<script>try{if(localStorage.getItem('sermaqPreloaderShown')==='1'){var __pl=document.getElementById('preloader');__pl.setAttribute('data-skip','1');__pl.style.display='none';}}catch(e){}</script>
 <div class="scroll-progress"><span></span></div>
 
 <header class="site-header">
@@ -44,42 +45,47 @@
 <main>
 
   <section class="hero">
+    <div class="hero-video-bg">
+      <video autoplay muted loop playsinline poster="assets/img/hero-video-poster-real.jpg" aria-label="Martillo demoledor SERMAQ en obra">
+        <source src="vid/0_Jackhammer_Pavement_3840x2160.mp4" type="video/mp4">
+      </video>
+    </div>
     <canvas class="hero-canvas" aria-hidden="true"></canvas>
+    <div class="hero-scrim"></div>
+
     <div class="hero-inner">
       <div class="hero-top" data-reveal>
         <div class="eyebrow">Herramienta y maquinaria · Querétaro</div>
       </div>
       <h1 class="hero-title" data-reveal>Renta y venta de<br>maquinaria <span class="hl">ligera</span></h1>
-      <div class="hero-media" data-reveal style="transition-delay:.1s">
-        <video autoplay muted loop playsinline poster="assets/img/hero-video-poster-real.jpg" aria-label="Martillo demoledor SERMAQ en obra">
-          <source src="vid/0_Jackhammer_Pavement_3840x2160.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="hero-lower">
-        <p class="lead" data-reveal style="transition-delay:.18s">Servicios ágiles con maquinaria funcional al mejor precio-calidad. Compactación, demolición, concreto, generadores, soldadoras y equipo de elevación, listos para trabajar.</p>
-        <div class="hero-btns" data-reveal style="transition-delay:.24s">
+
+      <div class="hero-bottom">
+        <p class="lead" data-reveal style="transition-delay:.1s">Servicios ágiles con maquinaria funcional al mejor precio-calidad. Compactación, demolición, concreto, generadores, soldadoras y equipo de elevación, listos para trabajar.</p>
+        <div class="hero-btns" data-reveal style="transition-delay:.18s">
           <a href="#" class="btn btn-whatsapp" target="_blank" rel="noopener" data-wa-message="Hola, quisiera más información sobre sus equipos."><svg class="wa-button-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.33 4.96L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2z"/></svg>Cotizar por WhatsApp</a>
           <a href="/equipos-renta" class="btn btn-outline">Ver equipos en renta</a>
         </div>
       </div>
     </div>
 
-    <div class="trust-bar" data-reveal-group>
-      <div class="trust-item">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>
-        <div class="label">Renta por día, semana o mes</div>
-      </div>
-      <div class="trust-item">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-13h-7z"/></svg>
-        <div class="label">Maquinaria lista para trabajar</div>
-      </div>
-      <div class="trust-item">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="7" width="15" height="11" rx="1"/><path d="M16 10h3l3 3v4h-6z"/><circle cx="6" cy="19" r="1.6"/><circle cx="18" cy="19" r="1.6"/></svg>
-        <div class="label">Recolección y entrega incluida</div>
-      </div>
-      <div class="trust-item">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6z"/><path d="m9 12 2 2 4-4"/></svg>
-        <div class="label">Equipos garantizados de calidad</div>
+    <div class="trust-bar">
+      <div class="trust-bar-inner" data-reveal-group>
+        <div class="trust-item">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>
+          <div class="label">Renta por día, semana o mes</div>
+        </div>
+        <div class="trust-item">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-13h-7z"/></svg>
+          <div class="label">Maquinaria lista para trabajar</div>
+        </div>
+        <div class="trust-item">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="7" width="15" height="11" rx="1"/><path d="M16 10h3l3 3v4h-6z"/><circle cx="6" cy="19" r="1.6"/><circle cx="18" cy="19" r="1.6"/></svg>
+          <div class="label">Recolección y entrega incluida</div>
+        </div>
+        <div class="trust-item">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6z"/><path d="m9 12 2 2 4-4"/></svg>
+          <div class="label">Equipos garantizados de calidad</div>
+        </div>
       </div>
     </div>
   </section>
@@ -96,63 +102,165 @@
       <div class="cat-grid" data-reveal-group>
 
         <div class="cat-card">
-          <div class="cat-card-media"><img src="assets/img/equipos/c1.png" alt="Compactadora"></div>
-          <div class="cat-card-body">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--navy)"><path d="M12 3v10"/><path d="m8 9 4 4 4-4"/><path d="M4 19h16" stroke-width="2.4"/></svg>
-            <div class="cat-card-title">Compactación</div>
-            <p>Placas, rodillos y bailarinas para preparar y compactar terreno.</p>
-            <a href="/equipos-renta#compactacion" class="cat-link">Ver equipos →</a>
+          <div class="cat-card-inner">
+            <div class="cat-card-face cat-card-front">
+              <div class="cat-card-media"><img src="assets/img/equipos/c1.png" alt="Compactadora" loading="lazy"></div>
+              <div class="cat-card-body">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--navy)"><path d="M12 3v10"/><path d="m8 9 4 4 4-4"/><path d="M4 19h16" stroke-width="2.4"/></svg>
+                <div class="cat-card-title">Compactación</div>
+                <p>Placas, rodillos y bailarinas para preparar y compactar terreno.</p>
+              </div>
+            </div>
+            <div class="cat-card-face cat-card-back">
+              <div class="cat-card-back-content">
+                <div class="cat-card-back-kicker">Compactación</div>
+                <div class="cat-card-back-title">Equipo disponible</div>
+                <ul class="cat-card-back-list">
+                  <li>Placas vibratorias</li>
+                  <li>Rodillos compactadores</li>
+                  <li>Compactadoras / bailarinas</li>
+                </ul>
+                <div class="cat-card-back-price">Desde $550 / día</div>
+                <a href="/equipos-renta#compactacion" class="btn btn-orange btn-sm btn-block">Ver equipos y precios</a>
+              </div>
+            </div>
           </div>
+          <div class="cat-card-flip-hint" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg></div>
         </div>
 
         <div class="cat-card">
-          <div class="cat-card-media"><img src="assets/img/equipos/d1.png" alt="Martillo demoledor"></div>
-          <div class="cat-card-body">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--navy)"><path d="m14 6 4 4-9 9-5 1 1-5z"/><path d="m17.5 2.5 4 4"/></svg>
-            <div class="cat-card-title">Demolición</div>
-            <p>Martillos rompedores y demoledores para trabajos de alto impacto.</p>
-            <a href="/equipos-renta#demolicion" class="cat-link">Ver equipos →</a>
+          <div class="cat-card-inner">
+            <div class="cat-card-face cat-card-front">
+              <div class="cat-card-media"><img src="assets/img/equipos/d1.png" alt="Martillo demoledor" loading="lazy"></div>
+              <div class="cat-card-body">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--navy)"><path d="m14 6 4 4-9 9-5 1 1-5z"/><path d="m17.5 2.5 4 4"/></svg>
+                <div class="cat-card-title">Demolición</div>
+                <p>Martillos rompedores y demoledores para trabajos de alto impacto.</p>
+              </div>
+            </div>
+            <div class="cat-card-face cat-card-back">
+              <div class="cat-card-back-content">
+                <div class="cat-card-back-kicker">Demolición</div>
+                <div class="cat-card-back-title">Equipo disponible</div>
+                <ul class="cat-card-back-list">
+                  <li>Martillos rompedores 15 kg</li>
+                  <li>Martillos rompedores 25 kg</li>
+                  <li>Demoledores 30 kg</li>
+                </ul>
+                <div class="cat-card-back-price">Desde $550 / día</div>
+                <a href="/equipos-renta#demolicion" class="btn btn-orange btn-sm btn-block">Ver equipos y precios</a>
+              </div>
+            </div>
           </div>
+          <div class="cat-card-flip-hint" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg></div>
         </div>
 
         <div class="cat-card">
-          <div class="cat-card-media"><img src="assets/img/equipos/cc4.png" alt="Revolvedora de concreto"></div>
-          <div class="cat-card-body">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--navy)"><path d="M4 8h16l-3 12H7z"/><path d="M4 8 8 3h8l4 5"/></svg>
-            <div class="cat-card-title">Máquinas para concreto</div>
-            <p>Vibradores, allanadoras, revolvedoras y cortadoras.</p>
-            <a href="/equipos-renta#concreto" class="cat-link">Ver equipos →</a>
+          <div class="cat-card-inner">
+            <div class="cat-card-face cat-card-front">
+              <div class="cat-card-media"><img src="assets/img/equipos/cc4.png" alt="Revolvedora de concreto" loading="lazy"></div>
+              <div class="cat-card-body">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--navy)"><path d="M4 8h16l-3 12H7z"/><path d="M4 8 8 3h8l4 5"/></svg>
+                <div class="cat-card-title">Máquinas para concreto</div>
+                <p>Vibradores, allanadoras, revolvedoras y cortadoras.</p>
+              </div>
+            </div>
+            <div class="cat-card-face cat-card-back">
+              <div class="cat-card-back-content">
+                <div class="cat-card-back-kicker">Máquinas para concreto</div>
+                <div class="cat-card-back-title">Equipo disponible</div>
+                <ul class="cat-card-back-list">
+                  <li>Vibradores para concreto</li>
+                  <li>Allanadoras</li>
+                  <li>Revolvedoras</li>
+                  <li>Cortadoras</li>
+                </ul>
+                <div class="cat-card-back-price">Desde $500 / día</div>
+                <a href="/equipos-renta#concreto" class="btn btn-orange btn-sm btn-block">Ver equipos y precios</a>
+              </div>
+            </div>
           </div>
+          <div class="cat-card-flip-hint" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg></div>
         </div>
 
         <div class="cat-card">
-          <div class="cat-card-media"><img src="assets/img/equipos/g3.png" alt="Generador eléctrico"></div>
-          <div class="cat-card-body">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--navy)"><path d="M13 2 3 14h7l-1 8 11-13h-7z"/></svg>
-            <div class="cat-card-title">Generadores</div>
-            <p>Plantas de luz portátiles desde 5,500W hasta 13,000W.</p>
-            <a href="/equipos-renta#generadores" class="cat-link">Ver equipos →</a>
+          <div class="cat-card-inner">
+            <div class="cat-card-face cat-card-front">
+              <div class="cat-card-media"><img src="assets/img/equipos/g3.png" alt="Generador eléctrico" loading="lazy"></div>
+              <div class="cat-card-body">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--navy)"><path d="M13 2 3 14h7l-1 8 11-13h-7z"/></svg>
+                <div class="cat-card-title">Generadores</div>
+                <p>Plantas de luz portátiles desde 5,500W hasta 13,000W.</p>
+              </div>
+            </div>
+            <div class="cat-card-face cat-card-back">
+              <div class="cat-card-back-content">
+                <div class="cat-card-back-kicker">Generadores</div>
+                <div class="cat-card-back-title">Equipo disponible</div>
+                <ul class="cat-card-back-list">
+                  <li>Plantas de luz 5,500W – 8,000W</li>
+                  <li>Plantas de luz 10,000W</li>
+                  <li>Plantas de luz 13,000W</li>
+                </ul>
+                <div class="cat-card-back-price">Desde $600 / día</div>
+                <a href="/equipos-renta#generadores" class="btn btn-orange btn-sm btn-block">Ver equipos y precios</a>
+              </div>
+            </div>
           </div>
+          <div class="cat-card-flip-hint" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg></div>
         </div>
 
         <div class="cat-card">
-          <div class="cat-card-media"><img src="assets/img/equipos/s1.png" alt="Soldadora"></div>
-          <div class="cat-card-body">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--navy)"><path d="M3 21 21 3M14 3l7 7M7 14l3 3"/></svg>
-            <div class="cat-card-title">Soldadoras</div>
-            <p>Equipo de soldadura para obra y taller.</p>
-            <a href="/equipos-renta#soldadoras" class="cat-link">Ver equipos →</a>
+          <div class="cat-card-inner">
+            <div class="cat-card-face cat-card-front">
+              <div class="cat-card-media"><img src="assets/img/equipos/s1.png" alt="Soldadora" loading="lazy"></div>
+              <div class="cat-card-body">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--navy)"><path d="M3 21 21 3M14 3l7 7M7 14l3 3"/></svg>
+                <div class="cat-card-title">Soldadoras</div>
+                <p>Equipo de soldadura para obra y taller.</p>
+              </div>
+            </div>
+            <div class="cat-card-face cat-card-back">
+              <div class="cat-card-back-content">
+                <div class="cat-card-back-kicker">Soldadoras</div>
+                <div class="cat-card-back-title">Equipo disponible</div>
+                <ul class="cat-card-back-list">
+                  <li>Equipo Bronco 160 Amp</li>
+                  <li>Ideal para obra y taller</li>
+                </ul>
+                <div class="cat-card-back-price">Desde $770 / día</div>
+                <a href="/equipos-renta#soldadoras" class="btn btn-orange btn-sm btn-block">Ver equipos y precios</a>
+              </div>
+            </div>
           </div>
+          <div class="cat-card-flip-hint" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg></div>
         </div>
 
         <div class="cat-card">
-          <div class="cat-card-media"><img src="assets/img/equipos/e2.png" alt="Plataforma de elevación articulada"></div>
-          <div class="cat-card-body">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--navy)"><path d="M12 20V4M6 10l6-6 6 6"/></svg>
-            <div class="cat-card-title">Elevación</div>
-            <p>Plataformas, andamios y escaleras para trabajos en altura.</p>
-            <a href="/equipos-renta#elevacion" class="cat-link">Ver equipos →</a>
+          <div class="cat-card-inner">
+            <div class="cat-card-face cat-card-front">
+              <div class="cat-card-media"><img src="assets/img/equipos/e2.png" alt="Plataforma de elevación articulada" loading="lazy"></div>
+              <div class="cat-card-body">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--navy)"><path d="M12 20V4M6 10l6-6 6 6"/></svg>
+                <div class="cat-card-title">Elevación</div>
+                <p>Plataformas, andamios y escaleras para trabajos en altura.</p>
+              </div>
+            </div>
+            <div class="cat-card-face cat-card-back">
+              <div class="cat-card-back-content">
+                <div class="cat-card-back-kicker">Elevación</div>
+                <div class="cat-card-back-title">Equipo disponible</div>
+                <ul class="cat-card-back-list">
+                  <li>Plataformas de tijera</li>
+                  <li>Plataformas articuladas</li>
+                  <li>Andamios y escaleras</li>
+                </ul>
+                <div class="cat-card-back-price">Cotización según altura</div>
+                <a href="/equipos-renta#elevacion" class="btn btn-orange btn-sm btn-block">Ver equipos y precios</a>
+              </div>
+            </div>
           </div>
+          <div class="cat-card-flip-hint" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg></div>
         </div>
 
       </div>
@@ -284,13 +392,15 @@
   <section class="section cta-banner bg-navy-dark" data-reveal>
     <div class="cta-banner-accent"></div>
     <div class="container">
-      <h2>¿Listo para tu próximo proyecto?</h2>
-      <p>Escríbenos por WhatsApp, llámanos o cuéntanos qué necesitas en el formulario de contacto.</p>
+      <div class="cta-kicker">Respuesta inmediata</div>
+      <h2>Consigue tu maquinaria hoy mismo</h2>
+      <p>Escríbenos por WhatsApp y en minutos tienes cotización, disponibilidad y fecha de entrega.</p>
       <div class="cta-btns">
-        <a href="#" class="btn btn-whatsapp" target="_blank" rel="noopener" data-wa-message="Hola, quisiera más información sobre sus equipos."><svg class="wa-button-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.33 4.96L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2z"/></svg>WhatsApp</a>
+        <a href="#" class="btn btn-whatsapp cta-btn-main" target="_blank" rel="noopener" data-wa-message="Hola, quisiera más información sobre sus equipos."><svg class="wa-button-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.33 4.96L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2z"/></svg>Cotizar por WhatsApp</a>
         <a href="tel:+524461028254" class="btn btn-outline">Llamar</a>
         <a href="/contacto" class="btn btn-outline">Ir a contacto</a>
       </div>
+      <div class="cta-footnote">Entrega el mismo día en Querétaro y la zona del Bajío</div>
     </div>
   </section>
 

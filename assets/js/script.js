@@ -139,14 +139,23 @@
     });
   }
 
+  var PRELOADER_KEY = 'sermaqPreloaderShown';
+
   function initPreloader() {
     var pre = document.getElementById('preloader');
     if (!pre) return;
+
+    if (pre.hasAttribute('data-skip')) {
+      pre.remove();
+      return;
+    }
+
     var hidden = false;
     function hide() {
       if (hidden) return;
       hidden = true;
       pre.classList.add('is-hidden');
+      try { localStorage.setItem(PRELOADER_KEY, '1'); } catch (e) {}
     }
     if (document.readyState === 'complete') {
       setTimeout(hide, 200);
@@ -312,7 +321,7 @@
   function initTilt() {
     if (window.matchMedia && window.matchMedia('(pointer:coarse)').matches) return;
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-    var els = document.querySelectorAll('.cat-card, .equipo-card, .venta-card, .mv-card');
+    var els = document.querySelectorAll('.equipo-card, .venta-card, .mv-card');
     els.forEach(function (el) {
       el.addEventListener('mousemove', function (e) {
         var r = el.getBoundingClientRect();
@@ -321,6 +330,60 @@
         var rx = (-y * 8).toFixed(2);
         var ry = (x * 10).toFixed(2);
         el.style.transform = 'perspective(900px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translateY(-6px)';
+      });
+      el.addEventListener('mouseleave', function () {
+        el.style.transform = '';
+      });
+    });
+  }
+
+  function initFlipCards() {
+    var cards = document.querySelectorAll('.cat-card');
+    if (!cards.length) return;
+    var canHover = window.matchMedia && window.matchMedia('(hover:hover)').matches;
+    if (canHover) return;
+    cards.forEach(function (card) {
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('a')) return;
+        card.classList.toggle('is-flipped');
+      });
+    });
+  }
+
+  function initParallax() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    var video = document.querySelector('.hero-video-bg video');
+    var title = document.querySelector('.hero-title');
+    var hero = document.querySelector('.hero');
+    if (!hero) return;
+    var ticking = false;
+    function apply() {
+      var rect = hero.getBoundingClientRect();
+      if (rect.bottom > 0 && rect.top < window.innerHeight) {
+        var progress = -rect.top / (rect.height || 1);
+        if (video) video.style.transform = 'translateY(' + (progress * 60) + 'px) scale(1.08)';
+        if (title) title.style.transform = 'translateY(' + (progress * 26) + 'px)';
+      }
+      ticking = false;
+    }
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(apply);
+    }, { passive: true });
+    apply();
+  }
+
+  function initMagnetic() {
+    if (window.matchMedia && window.matchMedia('(pointer:coarse)').matches) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    var els = document.querySelectorAll('.btn');
+    els.forEach(function (el) {
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        var x = e.clientX - r.left - r.width / 2;
+        var y = e.clientY - r.top - r.height / 2;
+        el.style.transform = 'translate(' + (x * 0.22).toFixed(1) + 'px,' + (y * 0.32 - 3).toFixed(1) + 'px)';
       });
       el.addEventListener('mouseleave', function () {
         el.style.transform = '';
@@ -571,6 +634,9 @@
     initWaLinks();
     initScrollProgress();
     initTilt();
+    initFlipCards();
+    initParallax();
+    initMagnetic();
     initCounters();
     initAiChat();
     initCursor();
