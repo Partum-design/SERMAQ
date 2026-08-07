@@ -344,7 +344,7 @@ html.has-cursor .cursor-dot,html.has-cursor .cursor-ring{opacity:1}
 }
 
 /* ---------- CTA banner ---------- */
-.cta-banner{position:relative;overflow:hidden;border-radius:32px;margin:0 clamp(20px,4vw,56px);width:auto}
+.cta-banner{position:relative;overflow:hidden;border-radius:0;margin:0;width:100%}
 .cta-banner-accent{
   position:absolute;inset:0;
   background:radial-gradient(90% 140% at 90% 0%, rgba(247,148,29,.32), transparent 55%),
@@ -500,7 +500,7 @@ html.has-cursor .cursor-dot,html.has-cursor .cursor-ring{opacity:1}
   .venta-card{grid-template-columns:1fr}
   .venta-media{padding:24px 0}
   .footer-grid{grid-template-columns:1fr;gap:32px}
-  .cta-banner{margin:0 16px;border-radius:24px}
+  .cta-banner{margin:0;border-radius:0}
 }
 @media (max-width:600px){
   .cat-grid{grid-template-columns:1fr}
