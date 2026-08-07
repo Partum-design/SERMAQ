@@ -236,7 +236,6 @@
   }
 
   function initHeroCanvas() {
-    if (typeof THREE === 'undefined') return;
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
     if (window.matchMedia && window.matchMedia('(pointer:coarse)').matches) return;
 
@@ -252,51 +251,31 @@
     function setupParticleField(canvas) {
       var wrap = canvas.parentElement;
       var isMain = canvas.classList.contains('hero-canvas');
-      var count = isMain ? 260 : 130;
-
-      var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
-
-      var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera(55, 1, 0.1, 100);
-      camera.position.z = isMain ? 22 : 18;
-
-      var positions = new Float32Array(count * 3);
+      var count = isMain ? 72 : 36;
+      var ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      var particles = [];
       for (var i = 0; i < count; i++) {
-        positions[i * 3] = (Math.random() - 0.5) * 40;
-        positions[i * 3 + 1] = (Math.random() - 0.5) * 24;
-        positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
+        particles.push({
+          x: Math.random(),
+          y: Math.random(),
+          radius: isMain ? Math.random() * 1.6 + .35 : Math.random() * 1.2 + .3,
+          speed: Math.random() * .00018 + .00004,
+          drift: Math.random() * .00015 - .000075,
+          alpha: Math.random() * .5 + .2,
+          orange: Math.random() > .42
+        });
       }
-      var geometry = new THREE.BufferGeometry();
-      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-      var material = new THREE.PointsMaterial({
-        color: 0xf7941d,
-        size: isMain ? 0.11 : 0.09,
-        transparent: true,
-        opacity: 0.55,
-        sizeAttenuation: true
-      });
-      var points = new THREE.Points(geometry, material);
-      scene.add(points);
-
-      var material2 = new THREE.PointsMaterial({
-        color: 0xffffff,
-        size: isMain ? 0.06 : 0.05,
-        transparent: true,
-        opacity: 0.35,
-        sizeAttenuation: true
-      });
-      var points2 = new THREE.Points(geometry, material2);
-      points2.rotation.z = 0.4;
-      scene.add(points2);
 
       function resize() {
         var w = wrap.clientWidth || window.innerWidth;
         var h = wrap.clientHeight || window.innerHeight;
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-        renderer.setSize(w, h, false);
+        var ratio = Math.min(window.devicePixelRatio || 1, 1.25);
+        canvas.width = Math.round(w * ratio);
+        canvas.height = Math.round(h * ratio);
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
       }
       resize();
       window.addEventListener('resize', resize);
@@ -309,9 +288,20 @@
 
       function animate() {
         if (!running) return;
-        points.rotation.y += 0.0006;
-        points2.rotation.y -= 0.0004;
-        renderer.render(scene, camera);
+        var w = wrap.clientWidth || window.innerWidth;
+        var h = wrap.clientHeight || window.innerHeight;
+        ctx.clearRect(0, 0, w, h);
+        particles.forEach(function (p) {
+          p.y -= p.speed;
+          p.x += p.drift;
+          if (p.y < -.02) p.y = 1.02;
+          if (p.x < -.02) p.x = 1.02;
+          if (p.x > 1.02) p.x = -.02;
+          ctx.beginPath();
+          ctx.arc(p.x * w, p.y * h, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.orange ? 'rgba(247,148,29,' + p.alpha + ')' : 'rgba(255,255,255,' + (p.alpha * .65) + ')';
+          ctx.fill();
+        });
         requestAnimationFrame(animate);
       }
       animate();
