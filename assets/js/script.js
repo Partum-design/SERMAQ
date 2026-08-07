@@ -2,11 +2,13 @@
   'use strict';
 
   var WA_NUMBER = '524461028254';
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 
   function waLink(message) {
     return 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(message);
   }
 
+  /* ------------------------------------------------------------ nav ----- */
   function initNav() {
     var toggle = document.querySelector('.nav-toggle');
     var nav = document.querySelector('.main-nav');
@@ -29,11 +31,12 @@
       if (nav.classList.contains('is-open')) close(); else open();
     });
     if (scrim) scrim.addEventListener('click', close);
-    nav.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', close);
+    nav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', close); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') close();
     });
     window.addEventListener('resize', function () {
-      if (window.innerWidth > 860) close();
+      if (window.innerWidth > 880) close();
     });
   }
 
@@ -43,8 +46,8 @@
     var ticking = false;
     function apply() {
       var y = window.scrollY;
-      if (y > 60) header.classList.add('is-scrolled');
-      else if (y < 20) header.classList.remove('is-scrolled');
+      if (y > 40) header.classList.add('is-scrolled');
+      else if (y < 12) header.classList.remove('is-scrolled');
       ticking = false;
     }
     function onScroll() {
@@ -56,6 +59,86 @@
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 
+  /* -------------------------------------------- índice de maquinaria --- */
+  function initHeroIndex() {
+    var hero = document.querySelector('[data-hero]');
+    if (!hero) return;
+    var slides = hero.querySelectorAll('.hero-slide');
+    var buttons = hero.querySelectorAll('.rail-list button');
+    var plate = hero.querySelector('[data-hero-plate]');
+    var counter = hero.querySelector('[data-hero-index]');
+    var ghost = hero.querySelector('[data-hero-ghost]');
+    var prev = hero.querySelector('[data-hero-prev]');
+    var next = hero.querySelector('[data-hero-next]');
+    if (slides.length < 2) return;
+
+    var current = 0;
+    var timer = null;
+
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+    function go(i) {
+      current = (i + slides.length) % slides.length;
+      slides.forEach(function (s, idx) { s.classList.toggle('is-active', idx === current); });
+      buttons.forEach(function (b, idx) {
+        if (idx === current) b.setAttribute('aria-current', 'true');
+        else b.removeAttribute('aria-current');
+      });
+      if (counter) counter.textContent = pad(current + 1);
+      if (ghost) ghost.textContent = pad(current + 1);
+      var specs = slides[current].querySelector('.slide-specs');
+      if (plate && specs) plate.innerHTML = specs.innerHTML;
+    }
+
+    function stopAuto() {
+      if (timer) { clearInterval(timer); timer = null; }
+    }
+    function startAuto() {
+      if (reduced || timer) return;
+      timer = setInterval(function () { go(current + 1); }, 7000);
+    }
+
+    buttons.forEach(function (b, idx) {
+      b.addEventListener('click', function () { stopAuto(); go(idx); });
+    });
+    if (prev) prev.addEventListener('click', function () { stopAuto(); go(current - 1); });
+    if (next) next.addEventListener('click', function () { stopAuto(); go(current + 1); });
+
+    hero.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') { stopAuto(); go(current - 1); }
+      else if (e.key === 'ArrowRight') { stopAuto(); go(current + 1); }
+    });
+    hero.addEventListener('mouseenter', stopAuto);
+
+    // arranca la rotación solo cuando el hero está a la vista
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) startAuto(); else stopAuto();
+        });
+      }, { threshold: 0.4 });
+      io.observe(hero);
+    } else {
+      startAuto();
+    }
+
+    go(0);
+  }
+
+  /* ------------------------------ flotantes fuera del camino del hero -- */
+  function initFloatVisibility() {
+    var hero = document.querySelector('.hero');
+    if (!hero || !('IntersectionObserver' in window)) return;
+    document.body.classList.add('hero-visible');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        document.body.classList.toggle('hero-visible', entry.intersectionRatio > 0.35);
+      });
+    }, { threshold: [0, 0.35, 0.7] });
+    io.observe(hero);
+  }
+
+  /* -------------------------------------------------------- reveals ---- */
   function initReveal() {
     var targets = document.querySelectorAll('[data-reveal], [data-reveal-group]');
     if (!targets.length) return;
@@ -70,30 +153,34 @@
           io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     targets.forEach(function (t) { io.observe(t); });
 
-    // Safety net: if a target never intersects (odd layout, fast crawler
-    // render, tooling that doesn't scroll) content must not stay invisible.
+    // red de seguridad: nada debe quedarse invisible si nunca intersecta
     setTimeout(function () {
       targets.forEach(function (t) { t.classList.add('is-visible'); });
     }, 2500);
   }
 
+  /* ------------------------------------------------- filtros de renta -- */
   function initEquipoTabs() {
     var tabBar = document.querySelector('[data-tabs]');
     if (!tabBar) return;
     var buttons = tabBar.querySelectorAll('.tab-btn');
     var cards = document.querySelectorAll('[data-equipo-card]');
+    var count = document.querySelector('[data-equipo-count]');
 
     function applyFilter(cat) {
+      var shown = 0;
       buttons.forEach(function (b) {
         b.classList.toggle('active', b.getAttribute('data-cat') === cat);
       });
       cards.forEach(function (c) {
         var show = cat === 'todos' || c.getAttribute('data-categoria') === cat;
         c.classList.toggle('is-hidden', !show);
+        if (show) shown++;
       });
+      if (count) count.textContent = (shown < 10 ? '0' : '') + shown;
     }
 
     buttons.forEach(function (b) {
@@ -113,6 +200,7 @@
     }
   }
 
+  /* ---------------------------------------------------------- formulario */
   function initContactForm() {
     var form = document.querySelector('[data-contact-form]');
     if (!form) return;
@@ -139,16 +227,13 @@
     });
   }
 
+  /* ---------------------------------------------------------- preloader */
   var PRELOADER_KEY = 'sermaqPreloaderShown';
 
   function initPreloader() {
     var pre = document.getElementById('preloader');
     if (!pre) return;
-
-    if (pre.hasAttribute('data-skip')) {
-      pre.remove();
-      return;
-    }
+    if (pre.hasAttribute('data-skip')) { pre.remove(); return; }
 
     var hidden = false;
     function hide() {
@@ -157,12 +242,9 @@
       pre.classList.add('is-hidden');
       try { localStorage.setItem(PRELOADER_KEY, '1'); } catch (e) {}
     }
-    if (document.readyState === 'complete') {
-      setTimeout(hide, 200);
-    } else {
-      window.addEventListener('load', function () { setTimeout(hide, 200); });
-    }
-    setTimeout(hide, 4000);
+    if (document.readyState === 'complete') setTimeout(hide, 180);
+    else window.addEventListener('load', function () { setTimeout(hide, 180); });
+    setTimeout(hide, 3500);
   }
 
   function initWaLinks() {
@@ -185,174 +267,18 @@
     window.addEventListener('resize', onScroll);
   }
 
-  function initCursor() {
-    var fine = window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches;
-    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-    if (!fine || reduced) return;
-
-    var dot = document.createElement('div');
-    dot.className = 'cursor-dot';
-    var ring = document.createElement('div');
-    ring.className = 'cursor-ring';
-    document.body.appendChild(dot);
-    document.body.appendChild(ring);
-    document.documentElement.classList.add('has-cursor');
-
-    var mx = window.innerWidth / 2, my = window.innerHeight / 2;
-    var rx = mx, ry = my;
-
-    window.addEventListener('mousemove', function (e) {
-      mx = e.clientX;
-      my = e.clientY;
-      dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
-    });
-
-    function loop() {
-      rx += (mx - rx) * 0.18;
-      ry += (my - ry) * 0.18;
-      ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
-      requestAnimationFrame(loop);
-    }
-    requestAnimationFrame(loop);
-
-    document.addEventListener('mousedown', function () { ring.classList.add('is-down'); });
-    document.addEventListener('mouseup', function () { ring.classList.remove('is-down'); });
-    document.addEventListener('mouseleave', function () {
-      dot.classList.add('is-hidden');
-      ring.classList.add('is-hidden');
-    });
-    document.addEventListener('mouseenter', function () {
-      dot.classList.remove('is-hidden');
-      ring.classList.remove('is-hidden');
-    });
-
-    var HOVER_SEL = 'a, button, .btn, .cat-card, .equipo-card, .venta-card, .value-card, .mv-card, .contact-card, .tab-btn';
-    document.addEventListener('mouseover', function (e) {
-      if (e.target.closest && e.target.closest(HOVER_SEL)) ring.classList.add('is-hover');
-    });
-    document.addEventListener('mouseout', function (e) {
-      if (e.target.closest && e.target.closest(HOVER_SEL)) ring.classList.remove('is-hover');
-    });
-  }
-
-  function initHeroCanvas() {
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-    if (window.matchMedia && window.matchMedia('(pointer:coarse)').matches) return;
-
-    var canvases = document.querySelectorAll('.hero-canvas, .page-hero-canvas');
-    canvases.forEach(function (canvas) {
-      try {
-        setupParticleField(canvas);
-      } catch (err) {
-        canvas.style.display = 'none';
-      }
-    });
-
-    function setupParticleField(canvas) {
-      var wrap = canvas.parentElement;
-      var isMain = canvas.classList.contains('hero-canvas');
-      var count = isMain ? 72 : 36;
-      var ctx = canvas.getContext('2d');
-      if (!ctx) return;
-      var particles = [];
-      for (var i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random(),
-          y: Math.random(),
-          radius: isMain ? Math.random() * 1.6 + .35 : Math.random() * 1.2 + .3,
-          speed: Math.random() * .00018 + .00004,
-          drift: Math.random() * .00015 - .000075,
-          alpha: Math.random() * .5 + .2,
-          orange: Math.random() > .42
-        });
-      }
-
-      function resize() {
-        var w = wrap.clientWidth || window.innerWidth;
-        var h = wrap.clientHeight || window.innerHeight;
-        var ratio = Math.min(window.devicePixelRatio || 1, 1.25);
-        canvas.width = Math.round(w * ratio);
-        canvas.height = Math.round(h * ratio);
-        canvas.style.width = w + 'px';
-        canvas.style.height = h + 'px';
-        ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-      }
-      resize();
-      window.addEventListener('resize', resize);
-
-      var running = true;
-      document.addEventListener('visibilitychange', function () {
-        running = !document.hidden;
-        if (running) requestAnimationFrame(animate);
-      });
-
-      function animate() {
-        if (!running) return;
-        var w = wrap.clientWidth || window.innerWidth;
-        var h = wrap.clientHeight || window.innerHeight;
-        ctx.clearRect(0, 0, w, h);
-        particles.forEach(function (p) {
-          p.y -= p.speed;
-          p.x += p.drift;
-          if (p.y < -.02) p.y = 1.02;
-          if (p.x < -.02) p.x = 1.02;
-          if (p.x > 1.02) p.x = -.02;
-          ctx.beginPath();
-          ctx.arc(p.x * w, p.y * h, p.radius, 0, Math.PI * 2);
-          ctx.fillStyle = p.orange ? 'rgba(247,148,29,' + p.alpha + ')' : 'rgba(255,255,255,' + (p.alpha * .65) + ')';
-          ctx.fill();
-        });
-        requestAnimationFrame(animate);
-      }
-      animate();
-    }
-  }
-
-  function initTilt() {
-    if (window.matchMedia && window.matchMedia('(pointer:coarse)').matches) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-    var els = document.querySelectorAll('.equipo-card, .venta-card, .mv-card');
-    els.forEach(function (el) {
-      el.addEventListener('mousemove', function (e) {
-        var r = el.getBoundingClientRect();
-        var x = (e.clientX - r.left) / r.width - 0.5;
-        var y = (e.clientY - r.top) / r.height - 0.5;
-        var rx = (-y * 8).toFixed(2);
-        var ry = (x * 10).toFixed(2);
-        el.style.transform = 'perspective(900px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translateY(-6px)';
-      });
-      el.addEventListener('mouseleave', function () {
-        el.style.transform = '';
-      });
-    });
-  }
-
-  function initFlipCards() {
-    var cards = document.querySelectorAll('.cat-card');
-    if (!cards.length) return;
-    var canHover = window.matchMedia && window.matchMedia('(hover:hover)').matches;
-    if (canHover) return;
-    cards.forEach(function (card) {
-      card.addEventListener('click', function (e) {
-        if (e.target.closest('a')) return;
-        card.classList.toggle('is-flipped');
-      });
-    });
-  }
-
+  /* --------------------------------------------- parallax del video ---- */
   function initParallax() {
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-    var video = document.querySelector('.hero-video-bg video');
-    var title = document.querySelector('.hero-title');
+    if (reduced) return;
+    var video = document.querySelector('.hero-bg video');
     var hero = document.querySelector('.hero');
-    if (!hero) return;
+    if (!hero || !video) return;
     var ticking = false;
     function apply() {
       var rect = hero.getBoundingClientRect();
       if (rect.bottom > 0 && rect.top < window.innerHeight) {
         var progress = -rect.top / (rect.height || 1);
-        if (video) video.style.transform = 'translateY(' + (progress * 60) + 'px) scale(1.08)';
-        if (title) title.style.transform = 'translateY(' + (progress * 26) + 'px)';
+        video.style.transform = 'translateY(' + (progress * 48).toFixed(1) + 'px) scale(1.06)';
       }
       ticking = false;
     }
@@ -364,45 +290,26 @@
     apply();
   }
 
-  function initMagnetic() {
-    if (window.matchMedia && window.matchMedia('(pointer:coarse)').matches) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-    var els = document.querySelectorAll('.btn');
-    els.forEach(function (el) {
-      el.addEventListener('mousemove', function (e) {
-        var r = el.getBoundingClientRect();
-        var x = e.clientX - r.left - r.width / 2;
-        var y = e.clientY - r.top - r.height / 2;
-        el.style.transform = 'translate(' + (x * 0.22).toFixed(1) + 'px,' + (y * 0.32 - 3).toFixed(1) + 'px)';
-      });
-      el.addEventListener('mouseleave', function () {
-        el.style.transform = '';
-      });
-    });
-  }
-
+  /* ------------------------------------------------------- contadores -- */
   function initCounters() {
     var els = document.querySelectorAll('[data-count-to]');
     if (!els.length) return;
+    if (reduced) return;
     function animate(el) {
       var target = parseFloat(el.getAttribute('data-count-to'));
       var suffix = el.getAttribute('data-count-suffix') || '';
-      var duration = 1400;
+      var duration = 1300;
       var start = null;
       function step(ts) {
         if (!start) start = ts;
         var p = Math.min(1, (ts - start) / duration);
         var eased = 1 - Math.pow(1 - p, 3);
-        var value = Math.round(target * eased);
-        el.textContent = value + suffix;
+        el.textContent = Math.round(target * eased) + suffix;
         if (p < 1) requestAnimationFrame(step);
       }
       requestAnimationFrame(step);
     }
-    if (!('IntersectionObserver' in window)) {
-      els.forEach(animate);
-      return;
-    }
+    if (!('IntersectionObserver' in window)) return;
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
@@ -410,31 +317,32 @@
           io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.4 });
+    }, { threshold: 0.5 });
     els.forEach(function (el) { io.observe(el); });
   }
 
+  /* ------------------------------------------------------ asistente ---- */
   var AI_NODES = {
     start: {
-      text: '¡Hola! Soy el asistente virtual de SERMAQ. Puedo contarte sobre nuestros equipos, precios y zona de cobertura. ¿Qué te gustaría saber?',
+      text: '¡Hola! Soy el asistente de SERMAQ. Puedo contarte sobre equipos, precios y zona de cobertura. ¿Qué necesitas?',
       options: [
         { label: 'Equipos en renta', next: 'renta' },
         { label: 'Equipos en venta', next: 'venta' },
-        { label: 'Precios y modalidades', next: 'precios' },
+        { label: 'Precios', next: 'precios' },
         { label: 'Zona de cobertura', next: 'zona' },
-        { label: 'Hablar con un asesor', wa: 'Hola, quisiera hablar con un asesor de SERMAQ.' }
+        { label: 'Hablar con un asesor', wa: 'Hola, quisiera hablar con un asesor de SERMAQ.', cls: 'wa-option' }
       ]
     },
     renta: {
-      text: 'Rentamos maquinaria ligera por día, semana o mes, con entrega y recolección incluida. Estas son nuestras categorías:',
+      text: 'Rentamos maquinaria ligera por día, semana o mes, con entrega y recolección incluida. Estas son las categorías:',
       options: [
         { label: 'Compactación', next: 'cat_compactacion' },
         { label: 'Demolición', next: 'cat_demolicion' },
-        { label: 'Máquinas para concreto', next: 'cat_concreto' },
+        { label: 'Concreto', next: 'cat_concreto' },
         { label: 'Generadores', next: 'cat_generadores' },
         { label: 'Soldadoras', next: 'cat_soldadoras' },
         { label: 'Elevación', next: 'cat_elevacion' },
-        { label: 'Regresar al menú', next: 'start' }
+        { label: 'Regresar', next: 'start' }
       ]
     },
     cat_compactacion: {
@@ -443,7 +351,7 @@
       options: [
         { label: 'Cotizar por WhatsApp', wa: 'Hola, me interesa cotizar equipo de compactación.', cls: 'wa-option' },
         { label: 'Ver otra categoría', next: 'renta' },
-        { label: 'Menú principal', next: 'start' }
+        { label: 'Menú', next: 'start' }
       ]
     },
     cat_demolicion: {
@@ -452,7 +360,7 @@
       options: [
         { label: 'Cotizar por WhatsApp', wa: 'Hola, me interesa cotizar equipo de demolición.', cls: 'wa-option' },
         { label: 'Ver otra categoría', next: 'renta' },
-        { label: 'Menú principal', next: 'start' }
+        { label: 'Menú', next: 'start' }
       ]
     },
     cat_concreto: {
@@ -461,58 +369,58 @@
       options: [
         { label: 'Cotizar por WhatsApp', wa: 'Hola, me interesa cotizar máquinas para concreto.', cls: 'wa-option' },
         { label: 'Ver otra categoría', next: 'renta' },
-        { label: 'Menú principal', next: 'start' }
+        { label: 'Menú', next: 'start' }
       ]
     },
     cat_generadores: {
-      text: 'Generadores: plantas de luz de 5,500W a 13,000W, desde $600 al día.',
+      text: 'Generadores: plantas de luz de 5,500 W a 13,000 W, desde $600 al día.',
       link: { label: 'Ver equipos y precios', href: '/equipos-renta#generadores' },
       options: [
         { label: 'Cotizar por WhatsApp', wa: 'Hola, me interesa cotizar un generador.', cls: 'wa-option' },
         { label: 'Ver otra categoría', next: 'renta' },
-        { label: 'Menú principal', next: 'start' }
+        { label: 'Menú', next: 'start' }
       ]
     },
     cat_soldadoras: {
-      text: 'Soldadoras: equipo Bronco de 160 Amp, ideal para obra y taller, desde $770 al día.',
+      text: 'Soldadoras: equipo Bronco de 160 A, para obra y taller, desde $770 al día.',
       link: { label: 'Ver equipos y precios', href: '/equipos-renta#soldadoras' },
       options: [
         { label: 'Cotizar por WhatsApp', wa: 'Hola, me interesa cotizar una soldadora.', cls: 'wa-option' },
         { label: 'Ver otra categoría', next: 'renta' },
-        { label: 'Menú principal', next: 'start' }
+        { label: 'Menú', next: 'start' }
       ]
     },
     cat_elevacion: {
-      text: 'Elevación: plataformas de tijera, articuladas, andamios y escaleras. Se cotizan según la altura que necesites.',
+      text: 'Elevación: plataformas de tijera, articuladas, andamios y escaleras. El precio depende de la altura que necesites.',
       link: { label: 'Ver equipos disponibles', href: '/equipos-renta#elevacion' },
       options: [
         { label: 'Cotizar por WhatsApp', wa: 'Hola, me interesa cotizar equipo de elevación.', cls: 'wa-option' },
         { label: 'Ver otra categoría', next: 'renta' },
-        { label: 'Menú principal', next: 'start' }
+        { label: 'Menú', next: 'start' }
       ]
     },
     venta: {
-      text: 'Vendemos maquinaria nueva y seminueva en las mismas categorías que rentamos, con garantía, revisión técnica previa y asesoría para elegir el equipo ideal.',
+      text: 'Vendemos maquinaria nueva y seminueva en las mismas categorías que rentamos, con garantía y revisión técnica previa.',
       link: { label: 'Ver equipos en venta', href: '/equipos-venta' },
       options: [
         { label: 'Cotizar por WhatsApp', wa: 'Hola, me interesa comprar equipo. ¿Me pueden compartir opciones disponibles?', cls: 'wa-option' },
-        { label: 'Menú principal', next: 'start' }
+        { label: 'Menú', next: 'start' }
       ]
     },
     precios: {
-      text: 'Rentamos por día, semana o mes: entre más tiempo rentes, mejor precio por día te sale. El costo exacto depende del equipo, desde $500 al día. Dime qué necesitas y te ayudo a ubicar el precio, o te paso directo con un asesor.',
+      text: 'Rentamos por día, semana o mes: entre más tiempo, mejor precio por día. Los equipos arrancan en $500 al día. Dime qué necesitas y te ubico el precio.',
       options: [
-        { label: 'Ver categorías de renta', next: 'renta' },
+        { label: 'Ver categorías', next: 'renta' },
         { label: 'Cotizar por WhatsApp', wa: 'Hola, quisiera una cotización de renta.', cls: 'wa-option' },
-        { label: 'Menú principal', next: 'start' }
+        { label: 'Menú', next: 'start' }
       ]
     },
     zona: {
-      text: 'Damos servicio en Querétaro y toda la zona del Bajío, con entrega y recolección incluida. Estamos ubicados en Carretera a los Cues Km 1.2, El Colorado, El Marqués, Querétaro.',
+      text: 'Damos servicio en Querétaro y la zona del Bajío, con entrega y recolección incluida. Estamos en Carretera a los Cues Km 1.2, El Colorado, El Marqués.',
       link: { label: 'Ver ubicación en el mapa', href: 'https://maps.app.goo.gl/o31nXRbfgL2trr4u9', external: true },
       options: [
         { label: 'Preguntar por WhatsApp', wa: 'Hola, quisiera saber si dan servicio en mi zona.', cls: 'wa-option' },
-        { label: 'Menú principal', next: 'start' }
+        { label: 'Menú', next: 'start' }
       ]
     }
   };
@@ -526,9 +434,7 @@
 
     var started = false;
 
-    function scrollDown() {
-      messages.scrollTop = messages.scrollHeight;
-    }
+    function scrollDown() { messages.scrollTop = messages.scrollHeight; }
 
     function addMessage(text, who) {
       var div = document.createElement('div');
@@ -543,10 +449,7 @@
       a.className = 'ai-msg-link';
       a.href = link.href;
       a.textContent = link.label + ' →';
-      if (link.external) {
-        a.target = '_blank';
-        a.rel = 'noopener';
-      }
+      if (link.external) { a.target = '_blank'; a.rel = 'noopener'; }
       messages.appendChild(a);
       scrollDown();
     }
@@ -562,7 +465,7 @@
           addMessage(opt.label, 'user');
           if (opt.wa) {
             showTyping(function () {
-              addMessage('Te abrimos WhatsApp para continuar con un asesor.', 'bot');
+              addMessage('Te abrimos WhatsApp para seguir con un asesor.', 'bot');
               window.open(waLink(opt.wa), '_blank', 'noopener');
             });
             return;
@@ -580,10 +483,7 @@
       typing.innerHTML = '<span></span><span></span><span></span>';
       messages.appendChild(typing);
       scrollDown();
-      setTimeout(function () {
-        typing.remove();
-        cb();
-      }, 550);
+      setTimeout(function () { typing.remove(); cb(); }, 480);
     }
 
     function goTo(key) {
@@ -599,10 +499,7 @@
     function openChat() {
       toggle.classList.add('is-open');
       panel.classList.add('is-open');
-      if (!started) {
-        started = true;
-        goTo('start');
-      }
+      if (!started) { started = true; goTo('start'); }
     }
     function closeChat() {
       toggle.classList.remove('is-open');
@@ -612,24 +509,24 @@
     toggle.addEventListener('click', function () {
       if (panel.classList.contains('is-open')) closeChat(); else openChat();
     });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && panel.classList.contains('is-open')) closeChat();
+    });
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     initPreloader();
     initNav();
     initStickyHeader();
+    initHeroIndex();
+    initFloatVisibility();
     initReveal();
     initEquipoTabs();
     initContactForm();
     initWaLinks();
     initScrollProgress();
-    initTilt();
-    initFlipCards();
     initParallax();
-    initMagnetic();
     initCounters();
     initAiChat();
-    initCursor();
-    initHeroCanvas();
   });
 })();
