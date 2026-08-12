@@ -1,7 +1,7 @@
 /* ==========================================================================
    SERMAQ · Herramienta y Maquinaria
    Sistema visual 2026 — "placa de datos"
-   Lienzo negro, amarillo/naranja protagonista, azul como detalle, datos en mono.
+   Lienzo negro, azul eléctrico, amarillo/naranja como acento, datos en mono.
    ========================================================================== */
 
 :root{
@@ -55,13 +55,13 @@
   --accent:var(--orange);
 }
 .s-blue{
-  --bg:var(--amber);
-  --fg:var(--ink);
-  --fg-dim:rgba(13,13,13,.72);
-  --panel:rgba(13,13,13,.9);
-  --line:rgba(13,13,13,.24);
-  --line-strong:rgba(13,13,13,.52);
-  --accent:var(--blue);
+  --bg:var(--blue);
+  --fg:#FFFFFF;
+  --fg-dim:rgba(255,255,255,.74);
+  --panel:rgba(255,255,255,.10);
+  --line:rgba(255,255,255,.28);
+  --line-strong:rgba(255,255,255,.55);
+  --accent:#FFFFFF;
 }
 
 /* --------------------------------------------------------------- base ---- */
@@ -262,24 +262,24 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 .hero-stage{position:relative;z-index:2;align-self:stretch;min-height:clamp(340px,44vw,600px);display:flex;align-items:flex-end;justify-content:center}
 .stage-block{
   position:absolute;right:6%;top:8%;bottom:16%;width:min(56%,420px);
-  background:linear-gradient(145deg,var(--amber) 0%,var(--orange) 58%,var(--orange-deep) 100%);
+  background:linear-gradient(158deg,#04329F 0%,var(--blue) 58%,#03206E 100%);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 1px 0 0 rgba(255,255,255,.08);
-  box-shadow:0 40px 120px rgba(242,135,41,.34);
+  box-shadow:0 40px 120px rgba(3,37,140,.55);
   display:flex;align-items:flex-start;justify-content:flex-end;padding:10px 16px;
 }
 .stage-block::before{
   content:'';position:absolute;z-index:0;right:9%;top:20%;width:min(62%,290px);aspect-ratio:1;border-radius:50%;
-  background:var(--amber-soft);box-shadow:0 18px 44px rgba(3,37,140,.18);opacity:.96;
+  background:var(--amber);box-shadow:0 18px 44px rgba(242,171,39,.28);opacity:.96;
 }
 .stage-ghost{
   position:relative;z-index:1;
   font-family:'Archivo',sans-serif;font-weight:800;font-stretch:118%;
   font-size:clamp(64px,8.5vw,132px);line-height:.78;letter-spacing:-.04em;
-  color:rgba(3,37,140,.22);
+  color:rgba(255,255,255,.17);
 }
 .stage-block::after{
   content:'';position:absolute;left:-1px;top:-1px;width:26px;height:26px;
-  border-left:2px solid var(--blue);border-top:2px solid var(--blue);
+  border-left:2px solid var(--amber);border-top:2px solid var(--amber);
 }
 .hero-slide{
   position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;
@@ -331,20 +331,20 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 .hero-nav button + button{border-left:none}
 .hero-nav button:hover{background:var(--orange);border-color:var(--orange);color:var(--ink)}
 
-/* --------------------------------------- banda amarilla de garantías --- */
-.spec-band{background:linear-gradient(105deg,var(--amber),var(--orange));color:var(--ink);border-bottom:1px solid rgba(3,37,140,.22)}
+/* --------------------------------------------- banda azul de garantías --- */
+.spec-band{background:var(--blue);color:#fff;border-bottom:1px solid rgba(255,255,255,.2)}
 .spec-band-inner{
   max-width:var(--shell);margin:0 auto;padding:0 var(--gutter);
   display:grid;grid-template-columns:repeat(4,1fr);
 }
 .spec-band .cell{
   display:flex;align-items:center;gap:14px;padding:26px 24px 26px 0;
-  border-right:1px solid rgba(3,37,140,.2);
+  border-right:1px solid rgba(255,255,255,.22);
 }
 .spec-band .cell:first-child{padding-left:0}
 .spec-band .cell:not(:first-child){padding-left:24px}
 .spec-band .cell:last-child{border-right:none}
-.spec-band svg{flex:0 0 auto;color:var(--blue)}
+.spec-band svg{flex:0 0 auto;color:var(--amber)}
 .spec-band .label{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;line-height:1.4}
 
 /* --------------------------------------------------- catálogo (index) --- */
@@ -358,7 +358,7 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 .cat-card:hover{background:var(--panel)}
 .cat-card-media{
   position:relative;height:230px;display:flex;align-items:center;justify-content:center;overflow:hidden;
-  background:linear-gradient(168deg,#FFF3D0 0%,#E4E6EA 100%);border-top:2px solid var(--amber);
+  background:linear-gradient(168deg,#E2E3E8 0%,#B7BAC4 100%);border-top:2px solid var(--amber);
 }
 .cat-card-media::after{
   content:'SERMAQ';position:absolute;left:16px;bottom:12px;
@@ -412,9 +412,9 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 .step h3{font-family:'Archivo',sans-serif;font-weight:800;font-stretch:112%;text-transform:uppercase;font-size:17px;line-height:1.05;color:var(--fg);margin-bottom:10px}
 .step p{font-size:14.5px;line-height:1.55;color:var(--fg-dim)}
 .process-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);gap:clamp(32px,5vw,72px);align-items:center;margin-bottom:clamp(40px,5vw,68px)}
-.process-photo{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--orange)}
+.process-photo{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--navy)}
 .process-photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(.18) contrast(1.05)}
-.process-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(200deg,rgba(242,135,41,.28),transparent 55%,rgba(13,13,13,.45))}
+.process-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(200deg,rgba(3,37,140,.42),transparent 55%,rgba(13,13,13,.45))}
 .process-photo .tag{
   position:absolute;left:0;bottom:0;z-index:2;background:var(--ink);color:#fff;
   font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
@@ -437,30 +437,31 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 
 /* ------------------------------------------------------ quiénes somos --- */
 .about-layout{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:clamp(34px,5vw,80px);align-items:stretch}
-.about-photo{position:relative;overflow:hidden;min-height:clamp(360px,44vw,600px);background:var(--orange)}
+.about-photo{position:relative;overflow:hidden;min-height:clamp(360px,44vw,600px);background:var(--navy)}
 .about-photo img{width:100%;height:100%;object-fit:cover}
 .about-photo img{filter:grayscale(.15) contrast(1.04)}
-.about-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(200deg,rgba(242,135,41,.2),transparent 50%,rgba(13,13,13,.3))}
+.about-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(200deg,rgba(3,37,140,.34),transparent 50%,rgba(13,13,13,.3))}
 .about-photo .stamp{
   position:absolute;right:0;top:0;z-index:2;background:linear-gradient(135deg,var(--amber),var(--orange));color:var(--ink);
   font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
   padding:12px 16px;
 }
-.about-body h2{font-size:clamp(28px,3.4vw,48px);margin-bottom:22px;color:var(--fg)}
-.about-body > p{font-size:17px;line-height:1.68;color:var(--fg-dim);max-width:56ch}
-.mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:38px;border-top:1px solid var(--line)}
+.about-body h2{font-size:clamp(28px,3.4vw,48px);margin-bottom:22px;color:var(--blue)}
+.about-body > p{font-size:17px;line-height:1.68;color:var(--fg-dim);max-width:56ch;text-align:justify;text-justify:inter-word}
+.mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:38px;border-top:2px solid var(--orange)}
 .mv-card{padding:28px 26px 28px 0;border-right:1px solid var(--line)}
 .mv-card:last-child{border-right:none;padding-left:26px}
-.mv-card .label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
-.mv-card p{font-size:15px;line-height:1.62;color:var(--fg)}
+.mv-card .label{display:flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);margin-bottom:16px}
+.mv-card .label::before{content:'';width:18px;height:2px;background:var(--amber);flex:0 0 auto}
+.mv-card p{font-size:15px;line-height:1.62;color:var(--fg);text-align:justify;text-justify:inter-word}
 .mv-card strong{font-weight:600}
 
 .values-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:clamp(48px,6vw,86px)}
 .value-row{display:flex;align-items:center;gap:14px;padding:26px 20px 26px 0;border-right:1px solid var(--line)}
 .value-row:not(:first-child){padding-left:22px}
 .value-row:last-child{border-right:none}
-.value-row svg{flex:0 0 auto;color:var(--accent)}
-.value-row-label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg)}
+.value-row svg{flex:0 0 auto;color:var(--orange)}
+.value-row-label{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
 
 /* ------------------------------------------------------- marcas ticker -- */
 .marquee{--fade:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
@@ -477,16 +478,16 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 .cta-banner{position:relative;overflow:hidden}
 .cta-banner::after{
   content:'';position:absolute;right:-6%;top:-30%;width:52vw;height:160%;
-  background:var(--blue);opacity:.16;transform:skewX(-12deg);pointer-events:none;
+  background:var(--blue-deep);opacity:.85;transform:skewX(-12deg);pointer-events:none;
 }
 .cta-layout{position:relative;z-index:3;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:clamp(34px,5vw,72px);align-items:center}
-.cta-kicker{display:inline-flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);margin-bottom:20px}
+.cta-kicker{display:inline-flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#fff;margin-bottom:20px}
 .cta-kicker::before{content:'';width:7px;height:7px;background:var(--amber);border-radius:50%;animation:pulseDot 2s ease-in-out infinite}
 @keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(242,171,39,.6)}50%{box-shadow:0 0 0 7px rgba(242,171,39,0)}}
-.cta-banner h2{font-size:clamp(30px,4.4vw,62px);color:var(--ink);margin-bottom:20px;max-width:22ch}
-.cta-banner h2 em{font-style:normal;color:var(--orange-deep)}
-.cta-banner p{font-size:17px;line-height:1.6;color:rgba(13,13,13,.78);max-width:52ch}
-.cta-footnote{margin-top:26px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(13,13,13,.68)}
+.cta-banner h2{font-size:clamp(30px,4.4vw,62px);color:#fff;margin-bottom:20px;max-width:22ch}
+.cta-banner h2 em{font-style:normal;color:var(--amber)}
+.cta-banner p{font-size:17px;line-height:1.6;color:rgba(255,255,255,.82);max-width:52ch}
+.cta-footnote{margin-top:26px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.65)}
 .cta-action-card{background:var(--ink);padding:28px;border:1px solid rgba(255,255,255,.16);border-left:2px solid var(--amber);border-top:2px solid var(--amber)}
 .cta-action-label{display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:18px}
 .cta-btns .btn{width:100%;padding:18px 22px;font-size:13px}
@@ -501,7 +502,7 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 }
 .page-hero::before{
   content:'';position:absolute;right:-8%;top:-40%;width:46vw;height:150%;
-  background:radial-gradient(60% 50% at 60% 50%,rgba(242,135,41,.36),transparent 70%);
+  background:radial-gradient(60% 50% at 60% 50%,rgba(3,23,140,.55),transparent 70%);
   pointer-events:none;
 }
 .page-hero-inner{
@@ -517,11 +518,11 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 
 .page-hero-art{position:relative;height:clamp(210px,22vw,300px);display:flex;align-items:flex-end;justify-content:center}
 .art-block{position:absolute;right:0;top:0;bottom:12%;width:min(64%,290px);
-  background:linear-gradient(145deg,var(--amber),var(--orange) 64%,var(--orange-deep));
+  background:linear-gradient(158deg,#04329F,var(--blue) 60%,#03206E);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.16)}
 .art-block::after{
   content:'';position:absolute;left:-1px;top:-1px;width:22px;height:22px;
-  border-left:2px solid var(--blue);border-top:2px solid var(--blue);
+  border-left:2px solid var(--amber);border-top:2px solid var(--amber);
 }
 .page-hero-art img{
   position:relative;z-index:2;width:auto;height:auto;max-height:100%;max-width:74%;
@@ -533,8 +534,8 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 .page-hero--plain::after{
   content:'';position:absolute;right:0;top:clamp(96px,11vw,124px);bottom:0;
   width:clamp(56px,9vw,148px);z-index:2;
-  background:linear-gradient(180deg,var(--amber),var(--orange) 55%,var(--orange-deep));
-  border-left:8px solid var(--blue);
+  background:linear-gradient(180deg,#04329F,var(--blue) 55%,#03206E);
+  border-left:8px solid var(--amber);
 }
 
 /* ------------------------------------------------------------- tabs ----- */
@@ -568,7 +569,7 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 .equipo-card.is-hidden{display:none}
 .equipo-media{
   position:relative;height:210px;display:flex;align-items:center;justify-content:center;overflow:hidden;
-  background:linear-gradient(168deg,#FFF3D0 0%,#E9EAEF 68%,#CBCDD6 100%);border-top:2px solid var(--amber);border-bottom:1px solid var(--line);
+  background:linear-gradient(168deg,#E9EAEF 0%,#CBCDD6 100%);border-top:2px solid var(--amber);border-bottom:1px solid var(--line);
 }
 .equipo-media img{position:relative;z-index:2;width:100%;height:100%;object-fit:contain;padding:24px 30px;transition:transform .5s var(--ease)}
 .equipo-card:hover .equipo-media img{transform:scale(1.05)}
@@ -596,7 +597,7 @@ h1,h2,.cat-card-title,.equipo-name,.venta-body .title,.stage-name{
 .venta-grid{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
 .venta-card{display:grid;grid-template-columns:210px minmax(0,1fr);background:var(--panel);border-right:1px solid var(--line);border-bottom:1px solid var(--line);transition:box-shadow .3s ease}
 .venta-card:hover{box-shadow:inset 0 0 0 2px var(--orange)}
-.venta-media{position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(168deg,#FFF3D0 0%,#E9EAEF 68%,#CBCDD6 100%);border-right:1px solid var(--line);border-top:2px solid var(--amber);padding:26px 16px}
+.venta-media{position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(168deg,#E9EAEF 0%,#CBCDD6 100%);border-right:1px solid var(--line);border-top:2px solid var(--amber);padding:26px 16px}
 .venta-media img{width:100%;height:100%;max-height:190px;object-fit:contain;transition:transform .5s var(--ease)}
 .venta-media--duo{gap:4px}
 .venta-media--duo img{width:48%;height:100%;max-height:170px}
