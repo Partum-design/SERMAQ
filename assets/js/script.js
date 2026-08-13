@@ -213,7 +213,14 @@
       var telefono = form.telefono.value.trim();
       var servicio = form.servicio.value;
       var mensaje = form.mensaje.value.trim();
+      var empresa = form.empresa ? form.empresa.value.trim() : '';
       if (!nombre || !telefono || !mensaje) return;
+
+      fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre: nombre, telefono: telefono, servicio: servicio, mensaje: mensaje, empresa: empresa })
+      }).catch(function () {});
 
       var text = 'Hola, soy ' + nombre + '.\n' +
         'Servicio de interes: ' + servicio + '\n' +
