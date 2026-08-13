@@ -206,32 +206,91 @@
     if (!form) return;
     var panel = form.closest('.contact-form-panel');
     var successEl = panel ? panel.querySelector('.form-success') : null;
+    var successText = successEl ? successEl.querySelector('[data-success-text]') : null;
+    var errorEl = form.querySelector('[data-form-error]');
+    var waBtn = form.querySelector('[data-send="whatsapp"]');
+    var emailBtn = form.querySelector('[data-send="email"]');
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var nombre = form.nombre.value.trim();
-      var telefono = form.telefono.value.trim();
-      var servicio = form.servicio.value;
-      var mensaje = form.mensaje.value.trim();
-      var empresa = form.empresa ? form.empresa.value.trim() : '';
-      if (!nombre || !telefono || !mensaje) return;
+    form.addEventListener('submit', function (e) { e.preventDefault(); });
 
-      fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre: nombre, telefono: telefono, servicio: servicio, mensaje: mensaje, empresa: empresa })
-      }).catch(function () {});
+    function getValues() {
+      return {
+        nombre: form.nombre.value.trim(),
+        telefono: form.telefono.value.trim(),
+        servicio: form.servicio.value,
+        mensaje: form.mensaje.value.trim(),
+        empresa: form.empresa ? form.empresa.value.trim() : ''
+      };
+    }
 
-      var text = 'Hola, soy ' + nombre + '.\n' +
-        'Servicio de interes: ' + servicio + '\n' +
-        'Telefono: ' + telefono + '\n' +
-        'Mensaje: ' + mensaje;
+    function showError(msg) {
+      if (!errorEl) return;
+      errorEl.textContent = msg;
+      errorEl.classList.remove('hidden');
+    }
 
-      window.open(waLink(text), '_blank', 'noopener');
+    function clearError() {
+      if (errorEl) errorEl.classList.add('hidden');
+    }
 
+    function showSuccess(msg) {
+      if (successText) successText.textContent = msg;
       form.classList.add('hidden');
       if (successEl) successEl.classList.remove('hidden');
-    });
+    }
+
+    function setBtnLabel(btn, text) {
+      var label = btn.querySelector('[data-btn-label]');
+      if (label) label.textContent = text;
+    }
+
+    if (waBtn) {
+      waBtn.addEventListener('click', function () {
+        var v = getValues();
+        clearError();
+        if (!v.nombre || !v.telefono || !v.mensaje) { showError('Completa nombre, teléfono y mensaje.'); return; }
+
+        var text = 'Hola, soy ' + v.nombre + '.\n' +
+          'Servicio de interes: ' + v.servicio + '\n' +
+          'Telefono: ' + v.telefono + '\n' +
+          'Mensaje: ' + v.mensaje;
+
+        window.open(waLink(text), '_blank', 'noopener');
+        showSuccess('Gracias por escribirnos. Te abrimos WhatsApp con tu mensaje listo para enviar — solo confírmalo y un asesor de SERMAQ te contactará en breve.');
+      });
+    }
+
+    if (emailBtn) {
+      emailBtn.addEventListener('click', function () {
+        var v = getValues();
+        clearError();
+        if (!v.nombre || !v.telefono || !v.mensaje) { showError('Completa nombre, teléfono y mensaje.'); return; }
+
+        emailBtn.disabled = true;
+        setBtnLabel(emailBtn, 'Enviando…');
+
+        fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(v)
+        })
+          .then(function (r) { return r.json().then(function (data) { return { ok: r.ok && data && data.ok }; }); })
+          .then(function (res) {
+            if (res.ok) {
+              showSuccess('Gracias por escribirnos. Recibimos tu mensaje por correo y un asesor de SERMAQ te contactará en breve.');
+            } else {
+              showError('No pudimos enviar el correo. Intenta por WhatsApp o llámanos directamente.');
+            }
+          })
+          .catch(function () {
+            showError('No pudimos enviar el correo. Intenta por WhatsApp o llámanos directamente.');
+          })
+          .then(function () {
+            emailBtn.disabled = false;
+            setBtnLabel(emailBtn, 'Enviar por correo');
+          });
+      });
+    }
   }
 
   /* ---------------------------------------------------------- preloader */
